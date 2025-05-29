@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kuku_app/router/router.dart';
+import 'package:kuku_app/theme/app_theme_and_styles.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,12 +12,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      onGenerateRoute: RouteGenerator.generateRoute,
+      theme: theAppTheme(),
+      debugShowCheckedModeBanner: false,
       initialRoute: "/splash-screen",
+      onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
 }
