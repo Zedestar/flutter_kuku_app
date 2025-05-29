@@ -19,7 +19,7 @@ class TheButtomNavigationItem extends StatelessWidget {
           itemTitle,
           textAlign: TextAlign.center,
           style: TextStyle(
-              fontSize: 12, color: Colors.white, fontWeight: FontWeight.w500),
+              fontSize: 12, color: Colors.white, fontWeight: FontWeight.w600),
         ),
       ],
     );
