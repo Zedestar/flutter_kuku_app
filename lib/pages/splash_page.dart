@@ -24,10 +24,25 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: LottieBuilder.asset(
-          "assets/lottie/lottiesSplash.json",
-        ),
-      ),
+          child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          LottieBuilder.asset(
+            "assets/lottie/lottiesSplash.json",
+          ),
+          const SizedBox(height: 1),
+          const Text(
+            "Welcome to Kuku App",
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.lightBlueAccent,
+            ),
+          ),
+        ],
+      )),
     );
   }
 }
