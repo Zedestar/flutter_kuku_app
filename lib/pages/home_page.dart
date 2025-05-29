@@ -6,6 +6,9 @@ import 'package:kuku_app/pages/general_chatting_page.dart';
 import 'package:kuku_app/pages/general_post_page.dart';
 import 'package:kuku_app/pages/splash_page.dart';
 import 'package:kuku_app/widgets/bottom_navigation_items.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/theme_mode_provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -71,10 +74,20 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.dark_mode),
-                    title: Text('Dark mode'),
+                    leading: Icon(Provider.of<DarkLightModeProvider>(context,
+                                listen: false)
+                            .gettingThemeChanger
+                        ? Icons.dark_mode
+                        : Icons.light_mode),
+                    title: Text(
+                      Provider.of<DarkLightModeProvider>(context, listen: false)
+                              .gettingThemeChanger
+                          ? 'Dark mode'
+                          : 'Light mode',
+                    ),
                     onTap: () {
-                      Navigator.pushReplacementNamed(context, '/profile-page');
+                      Provider.of<DarkLightModeProvider>(context, listen: false)
+                          .toggleTheme();
                     },
                   ),
                   ListTile(

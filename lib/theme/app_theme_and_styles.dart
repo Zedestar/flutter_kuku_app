@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:kuku_app/provider/theme_mode_provider.dart';
+import 'package:provider/provider.dart';
 
-ThemeData theAppTheme() {
+ThemeData theAppTheme(
+    {required BuildContext context, required bool modeChanger}) {
   final colorScheme = ColorScheme.fromSeed(
     seedColor: Colors.lightBlueAccent,
-    brightness: Brightness.dark,
+    brightness: modeChanger ? Brightness.light : Brightness.dark,
   );
 
   return ThemeData(
@@ -99,12 +102,5 @@ ThemeData theAppTheme() {
       color: colorScheme.primary,
       size: 28,
     ),
-
-    // // BottomNavigationBar styling
-    // bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    //   selectedItemColor: colorScheme.primary,
-    //   unselectedItemColor: colorScheme.onSurface.withOpacity(0.6),
-    //   backgroundColor: colorScheme.surface,
-    // ),
   );
 }
