@@ -1,0 +1,28 @@
+import 'package:flutter/material.dart';
+import 'package:kuku_app/pages/home_page.dart';
+import 'package:kuku_app/pages/splash_page.dart';
+
+class RouteGenerator {
+  static Route<dynamic> generateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case "/splash-screen":
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
+      case "/home-page":
+        return MaterialPageRoute(builder: (_) => const HomePage());
+      default:
+        return _errorPage();
+    }
+  }
+
+  static Route<dynamic> _errorPage() {
+    return MaterialPageRoute(
+      builder: (_) {
+        return Scaffold(
+          body: Center(
+            child: Text("There is no such page"),
+          ),
+        );
+      },
+    );
+  }
+}
