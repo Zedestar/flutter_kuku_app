@@ -25,47 +25,91 @@ class _HomePageState extends State<HomePage> {
 
   void showSettingDialog(BuildContext context) {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
-        return ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height * 0.9,
-          ),
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height * 1,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ListTile(
-                  leading: Icon(Icons.account_circle_outlined),
-                  title: Text('Profile'),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/profile-page');
-                  },
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.65,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Container(
+                height: 80,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.lightBlueAccent,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(28),
+                    topRight: Radius.circular(28),
+                  ),
                 ),
-                ListTile(
-                  leading: Icon(Icons.notifications_outlined),
-                  title: Text('Notifications'),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/notifications-page');
-                  },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  child: Text("Settings",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      )),
                 ),
-                ListTile(
-                  leading: Icon(Icons.help_outline),
-                  title: Text('Help & Support'),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/help-page');
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.logout),
-                  title: Text('Logout'),
-                  onTap: () {
-                    Navigator.pushReplacementNamed(context, '/splash-screen');
-                  },
-                ),
-              ],
-            ),
+              ),
+              Column(
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.account_circle_outlined),
+                    title: Text('Profile'),
+                    onTap: () {
+                      Navigator.pushReplacementNamed(context, '/profile-page');
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.language),
+                    title: Text('Change to Kiswahili'),
+                    onTap: () {
+                      Navigator.pushReplacementNamed(context, '/profile-page');
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.dark_mode),
+                    title: Text('Dark mode'),
+                    onTap: () {
+                      Navigator.pushReplacementNamed(context, '/profile-page');
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.share),
+                    title: Text('ShareApp'),
+                    onTap: () {
+                      Navigator.pushReplacementNamed(context, '/share-page');
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.notifications_outlined),
+                    title: Text('Notifications'),
+                    onTap: () {
+                      Navigator.pushReplacementNamed(
+                          context, '/notifications-page');
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.help_outline),
+                    title: Text('Help & Support'),
+                    onTap: () {
+                      Navigator.pushReplacementNamed(
+                          context, '/help-and-support-page');
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.logout),
+                    title: Text('Logout'),
+                    onTap: () {
+                      Navigator.pushReplacementNamed(context, '/splash-screen');
+                    },
+                  ),
+                ],
+              )
+            ],
           ),
         );
       },
@@ -97,8 +141,8 @@ class _HomePageState extends State<HomePage> {
             itemIcon: Icons.medical_information_outlined,
           ),
           TheButtomNavigationItem(
-            itemTitle: "looking",
-            itemIcon: Icons.medical_information,
+            itemTitle: "My Samples",
+            itemIcon: Icons.science,
           ),
           TheButtomNavigationItem(
             itemTitle: "Settings",

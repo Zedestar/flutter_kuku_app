@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 ThemeData theAppTheme() {
   final colorScheme = ColorScheme.fromSeed(
     seedColor: Colors.lightBlueAccent,
-    brightness: Brightness.light,
+    brightness: Brightness.dark,
   );
 
   return ThemeData(

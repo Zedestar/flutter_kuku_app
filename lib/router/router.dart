@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:kuku_app/pages/help_and_support_page.dart';
 import 'package:kuku_app/pages/home_page.dart';
+import 'package:kuku_app/pages/profile_page.dart';
 import 'package:kuku_app/pages/splash_page.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case "/splash-screen":
+      case '/splash-screen':
         return MaterialPageRoute(builder: (_) => const SplashScreen());
-      case "/home-page":
+      case '/home-page':
         return MaterialPageRoute(builder: (_) => const HomePage());
+      case '/profile-page':
+        return MaterialPageRoute(builder: (_) => const ProfilePage());
+      case '/help-and-support-page':
+        return MaterialPageRoute(builder: (_) => const HelpAndSupportPage());
       default:
         return _errorPage();
     }
