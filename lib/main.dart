@@ -1,18 +1,27 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kuku_app/provider/theme_mode_provider.dart';
 import 'package:kuku_app/router/router.dart';
 import 'package:kuku_app/theme/app_theme_and_styles.dart';
 import 'package:provider/provider.dart';
 
-void main() {
-// MultiProvider(providers: [], child: ,)
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
 
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => DarkLightModeProvider()),
+    EasyLocalization(
+      supportedLocales: [
+        Locale('en'),
+        Locale('kw'),
       ],
-      child: const MyApp(),
+      path: 'assets/languages',
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => DarkLightModeProvider()),
+        ],
+        child: const MyApp(),
+      ),
     ),
   );
 }
@@ -25,10 +34,10 @@ class MyApp extends StatelessWidget {
     final modeChanger =
         Provider.of<DarkLightModeProvider>(context).gettingThemeChanger;
     return MaterialApp(
-      theme: theAppTheme(
-        context: context,
-        modeChanger: modeChanger,
-      ),
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      theme: theAppTheme(context: context, modeChanger: modeChanger),
       debugShowCheckedModeBanner: false,
       initialRoute: "/splash-screen",
       onGenerateRoute: RouteGenerator.generateRoute,

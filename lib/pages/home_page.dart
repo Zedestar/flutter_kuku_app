@@ -1,4 +1,5 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kuku_app/pages/authentication_page.dart';
 import 'package:kuku_app/pages/detect_disease_page.dart';
@@ -68,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   ListTile(
                     leading: Icon(Icons.language),
-                    title: Text('Change to Kiswahili'),
+                    title: Text('change_language'.tr()),
                     onTap: () {
                       Navigator.pushReplacementNamed(context, '/profile-page');
                     },
