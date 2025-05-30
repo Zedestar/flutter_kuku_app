@@ -5,7 +5,7 @@ import 'package:kuku_app/pages/authentication_page.dart';
 import 'package:kuku_app/pages/detect_disease_page.dart';
 import 'package:kuku_app/pages/general_chatting_page.dart';
 import 'package:kuku_app/pages/general_post_page.dart';
-import 'package:kuku_app/pages/splash_page.dart';
+// import 'package:kuku_app/pages/splash_page.dart';
 import 'package:kuku_app/widgets/bottom_navigation_items.dart';
 import 'package:provider/provider.dart';
 
@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 14),
-                  child: Text("Settings",
+                  child: Text("settings".tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 32,
@@ -71,7 +71,10 @@ class _HomePageState extends State<HomePage> {
                     leading: Icon(Icons.language),
                     title: Text('change_language'.tr()),
                     onTap: () {
-                      Navigator.pushReplacementNamed(context, '/profile-page');
+                      Locale currentLocale = context.locale;
+                      currentLocale.languageCode == 'en'
+                          ? context.setLocale(Locale('sw'))
+                          : context.setLocale(Locale('en'));
                     },
                   ),
                   ListTile(
@@ -108,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   ListTile(
                     leading: Icon(Icons.help_outline),
-                    title: Text('Help & Support'),
+                    title: Text('help_and_supprt'.tr()),
                     onTap: () {
                       Navigator.pushReplacementNamed(
                           context, '/help-and-support-page');

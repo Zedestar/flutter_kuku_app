@@ -72,7 +72,7 @@ flutter:
   assets:
     - assets/lottie/lottiesSplash.json
     - assets/languages/en.json
-    - assets/languages/kw.json
+    - assets/languages/sw.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

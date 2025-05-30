@@ -1,7 +1,8 @@
 {
-  "welcome": "Welcome to the app",
+  "welcome": "Welcome to kuku app",
   "login": "Login",
   "logout": "Logout",
   "settings": "Settings",
-  "change_language": "Tumia Kiswahili"
+  "change_language": "Tumia Kiswahili",
+  "help_and_supprt": "Help & Support"
 }

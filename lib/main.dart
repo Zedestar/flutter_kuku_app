@@ -13,7 +13,7 @@ void main() async {
     EasyLocalization(
       supportedLocales: [
         Locale('en'),
-        Locale('kw'),
+        Locale('sw'),
       ],
       path: 'assets/languages',
       child: MultiProvider(

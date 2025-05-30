@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kuku_app/provider/theme_mode_provider.dart';
-import 'package:provider/provider.dart';
+// import 'package:kuku_app/provider/theme_mode_provider.dart';
+// import 'package:provider/provider.dart';
 
 ThemeData theAppTheme(
     {required BuildContext context, required bool modeChanger}) {
