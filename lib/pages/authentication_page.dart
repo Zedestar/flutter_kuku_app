@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:kuku_app/constants/constant.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -70,14 +72,15 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      // backgroundColor: Colors.grey[200],
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
           child: Card(
             elevation: 4.0,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Form(
@@ -87,12 +90,12 @@ class _AuthPageState extends State<AuthPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     Text(
-                      _isLogin ? 'Login' : 'Sign Up',
+                      _isLogin ? 'login'.tr() : 'sign_up'.tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 24.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.lightBlueAccent,
+                        color: kcolor,
                       ),
                     ),
                     const SizedBox(height: 20.0),

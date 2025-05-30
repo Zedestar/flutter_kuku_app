@@ -1,6 +1,7 @@
 {
   "welcome": "Karibu kwenye app ya kuku",
   "login": "Ingia",
+  "sign_up": "Jisajiri",
   "logout": "Toka",
   "settings": "Mipangilio",
   "change_language": "Change To English",
@@ -9,5 +10,10 @@
   "light_mode": "Hali ya Mwanga",
   "notifications": "Arifa",
   "profile": "Wasifu",
-  "share_app": "Shiriki App"
+  "share_app": "Shiriki App",
+  "sample": "Sampuli",
+  "posts": "Chapisho",
+  "chats": "Midaharo",
+  "detect_disease": "Gundua Ugonjwa",
+  "profile_page": "Page ya Wasifu"
 }

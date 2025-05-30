@@ -1,7 +1,9 @@
 {
   "welcome": "Welcome to kuku app",
   "login": "Login",
+  "sign_up": "Sign up",
   "logout": "Logout",
+  "instruction_on_signing_up": "Don't have an account? Sign up",
   "settings": "Settings",
   "change_language": "Tumia Kiswahili",
   "help_and_supprt": "Help & Support",
@@ -9,5 +11,10 @@
   "light_mode": "Light Mode",
   "notifications": "Notifications",
   "profile": "Profile",
-  "share_app": "Share App"
+  "share_app": "Share App",
+  "sample": "Samples",
+  "posts": "Posts",
+  "chats": "Chats",
+  "detect_disease": "Detect Disease",
+  "profile_page": "Profile Page"
 }

@@ -146,26 +146,26 @@ class _HomePageState extends State<HomePage> {
         buttonBackgroundColor: Colors.lightBlue,
         animationCurve: Curves.easeInOut,
         animationDuration: Duration(milliseconds: 300),
-        height: 60,
+        height: 63,
         items: <Widget>[
           TheButtomNavigationItem(
-            itemTitle: "Posts",
+            itemTitle: 'posts'.tr(),
             itemIcon: Icons.article_outlined,
           ),
           TheButtomNavigationItem(
-            itemTitle: "Chats",
+            itemTitle: 'chats'.tr(),
             itemIcon: Icons.chat_outlined,
           ),
           TheButtomNavigationItem(
-            itemTitle: "Detect Disease",
+            itemTitle: 'detect_disease'.tr(),
             itemIcon: Icons.medical_information_outlined,
           ),
           TheButtomNavigationItem(
-            itemTitle: "My Samples",
+            itemTitle: 'sample'.tr(),
             itemIcon: Icons.science,
           ),
           TheButtomNavigationItem(
-            itemTitle: "Settings",
+            itemTitle: 'settings'.tr(),
             itemIcon: Icons.settings_outlined,
           ),
         ],
