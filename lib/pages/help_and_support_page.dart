@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kuku_app/widgets/app_bar.dart';
 
 class HelpAndSupportPage extends StatelessWidget {
   const HelpAndSupportPage({super.key});
@@ -6,9 +7,7 @@ class HelpAndSupportPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Help & Support'),
-      ),
+      appBar: theAppBar(context, 'help_and_supprt'),
       body: Center(
         child: Text(
           'Help & Support Page',

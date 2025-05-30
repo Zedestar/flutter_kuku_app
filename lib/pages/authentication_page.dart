@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kuku_app/constants/constant.dart';
+import 'package:kuku_app/widgets/app_bar.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -72,7 +73,7 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.grey[200],
+      appBar: theAppBar(context, 'auth_page'),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
@@ -148,8 +149,8 @@ class _AuthPageState extends State<AuthPage> {
                       onPressed: _toggleAuthMode,
                       child: Text(
                         _isLogin
-                            ? 'Don\'t have an account? Sign up'
-                            : 'Already have an account? Login',
+                            ? 'instruction_on_signing_up'.tr()
+                            : 'already_have_account_instruction'.tr(),
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.secondary),
                       ),

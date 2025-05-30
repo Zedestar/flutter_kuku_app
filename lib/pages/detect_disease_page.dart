@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:kuku_app/auth/auth_class.dart';
+import 'package:kuku_app/widgets/app_bar.dart';
 
 class PredictDiseaseScreen extends StatefulWidget {
   const PredictDiseaseScreen({super.key});
@@ -99,17 +100,7 @@ class _PredictDiseaseScreenState extends State<PredictDiseaseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Predict Disease'),
-        backgroundColor: Colors.lightBlueAccent,
-        // leading: ElevatedButton(
-        //   onPressed: () async {
-        //     final authService = AuthService();
-        //     await authService.logout();
-        //   },
-        //   child: Text("Logout"),
-        // ),
-      ),
+      appBar: theAppBar(context, "detect_disease"),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

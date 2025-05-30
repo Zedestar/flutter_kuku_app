@@ -1,8 +1,10 @@
 {
   "welcome": "Karibu kwenye app ya kuku",
   "login": "Ingia",
-  "sign_up": "Jisajiri",
+  "sign_up": "Jisajili",
   "logout": "Toka",
+  "instruction_on_signing_up": "Huna akaunti? Jisajili",
+  "already_have_account_instruction": "Tayari una akaunti? Ingia",
   "settings": "Mipangilio",
   "change_language": "Change To English",
   "help_and_supprt": "Msaada & Usaidizi",
@@ -15,5 +17,8 @@
   "posts": "Chapisho",
   "chats": "Midaharo",
   "detect_disease": "Gundua Ugonjwa",
-  "profile_page": "Page ya Wasifu"
+  "profile_page": "Ukurasa wa Wasifu",
+  "auth_page": "Ukurasa wa Uthibitisho",
+  "Post_page": "Ukurasa wa Chapisho",
+  "chat_page": "Ukurasa wa Midaharo"
 }

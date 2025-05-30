@@ -1,8 +1,8 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:kuku_app/constants/constant.dart';
-import 'package:kuku_app/pages/authentication_page.dart';
+// import 'package:kuku_app/constants/constant.dart';
+// import 'package:kuku_app/pages/authentication_page.dart';
 import 'package:kuku_app/pages/detect_disease_page.dart';
 import 'package:kuku_app/pages/general_chatting_page.dart';
 import 'package:kuku_app/pages/general_post_page.dart';

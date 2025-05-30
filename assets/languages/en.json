@@ -4,6 +4,7 @@
   "sign_up": "Sign up",
   "logout": "Logout",
   "instruction_on_signing_up": "Don't have an account? Sign up",
+  "already_have_account_instruction": "Already have an account? Login",
   "settings": "Settings",
   "change_language": "Tumia Kiswahili",
   "help_and_supprt": "Help & Support",
@@ -16,5 +17,8 @@
   "posts": "Posts",
   "chats": "Chats",
   "detect_disease": "Detect Disease",
-  "profile_page": "Profile Page"
+  "profile_page": "Profile Page",
+  "auth_page": "Authentication Page",
+  "Post_page": "Post Page",
+  "chat_page": "Chat Page"
 }
