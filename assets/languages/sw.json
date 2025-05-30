@@ -4,5 +4,10 @@
   "logout": "Toka",
   "settings": "Mipangilio",
   "change_language": "Change To English",
-  "help_and_supprt": "Msaada & Usaidizi"
+  "help_and_supprt": "Msaada & Usaidizi",
+  "dark_mode": "Hali ya Giza",
+  "light_mode": "Hali ya Mwanga",
+  "notifications": "Arifa",
+  "profile": "Wasifu",
+  "share_app": "Shiriki App"
 }

@@ -4,5 +4,10 @@
   "logout": "Logout",
   "settings": "Settings",
   "change_language": "Tumia Kiswahili",
-  "help_and_supprt": "Help & Support"
+  "help_and_supprt": "Help & Support",
+  "dark_mode": "Dark Mode",
+  "light_mode": "Light Mode",
+  "notifications": "Notifications",
+  "profile": "Profile",
+  "share_app": "Share App"
 }

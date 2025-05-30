@@ -1,12 +1,15 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:kuku_app/constants/constant.dart';
 import 'package:kuku_app/pages/authentication_page.dart';
 import 'package:kuku_app/pages/detect_disease_page.dart';
 import 'package:kuku_app/pages/general_chatting_page.dart';
 import 'package:kuku_app/pages/general_post_page.dart';
+import 'package:kuku_app/pages/sample_page.dart';
 // import 'package:kuku_app/pages/splash_page.dart';
 import 'package:kuku_app/widgets/bottom_navigation_items.dart';
+import 'package:kuku_app/widgets/bottom_tiles_tiles.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/theme_mode_provider.dart';
@@ -24,7 +27,7 @@ class _HomePageState extends State<HomePage> {
     GeneralPostPage(),
     GeneralChatPage(),
     PredictDiseaseScreen(),
-    AuthPage(),
+    SamplePage(),
   ];
 
   void showSettingDialog(BuildContext context) {
@@ -60,68 +63,68 @@ class _HomePageState extends State<HomePage> {
               ),
               Column(
                 children: [
-                  ListTile(
-                    leading: Icon(Icons.account_circle_outlined),
-                    title: Text('Profile'),
-                    onTap: () {
+                  BottomSheetTiles(
+                    tileString: 'profile'.tr(),
+                    tileIcon: Icons.account_circle_outlined,
+                    theFunction: () {
                       Navigator.pushReplacementNamed(context, '/profile-page');
                     },
                   ),
-                  ListTile(
-                    leading: Icon(Icons.language),
-                    title: Text('change_language'.tr()),
-                    onTap: () {
+                  BottomSheetTiles(
+                    tileString: 'change_language'.tr(),
+                    tileIcon: Icons.language_outlined,
+                    theFunction: () {
                       Locale currentLocale = context.locale;
                       currentLocale.languageCode == 'en'
                           ? context.setLocale(Locale('sw'))
                           : context.setLocale(Locale('en'));
                     },
                   ),
-                  ListTile(
-                    leading: Icon(Provider.of<DarkLightModeProvider>(context,
+                  BottomSheetTiles(
+                    tileString: Provider.of<DarkLightModeProvider>(context,
                                 listen: false)
                             .gettingThemeChanger
-                        ? Icons.dark_mode
-                        : Icons.light_mode),
-                    title: Text(
-                      Provider.of<DarkLightModeProvider>(context, listen: false)
-                              .gettingThemeChanger
-                          ? 'Dark mode'
-                          : 'Light mode',
-                    ),
-                    onTap: () {
+                        ? 'light_mode'.tr()
+                        : 'dark_mode'.tr(),
+                    tileIcon: Provider.of<DarkLightModeProvider>(context,
+                                listen: false)
+                            .gettingThemeChanger
+                        ? Icons.dark_mode_outlined
+                        : Icons.light_mode_outlined,
+                    theFunction: () {
                       Provider.of<DarkLightModeProvider>(context, listen: false)
                           .toggleTheme();
                     },
                   ),
-                  ListTile(
-                    leading: Icon(Icons.share),
-                    title: Text('ShareApp'),
-                    onTap: () {
+                  BottomSheetTiles(
+                    tileString: 'share_app'.tr(),
+                    tileIcon: Icons.share_outlined,
+                    theFunction: () {
                       Navigator.pushReplacementNamed(context, '/share-page');
                     },
                   ),
-                  ListTile(
-                    leading: Icon(Icons.notifications_outlined),
-                    title: Text('Notifications'),
-                    onTap: () {
-                      Navigator.pushReplacementNamed(
-                          context, '/notifications-page');
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.help_outline),
-                    title: Text('help_and_supprt'.tr()),
-                    onTap: () {
+
+                  // ListTile(
+                  //   leading: Icon(Icons.notifications_outlined),
+                  //   title: Text('notifications'.tr()),
+                  //   onTap: () {
+                  //     Navigator.pushReplacementNamed(
+                  //         context, '/notifications-page');
+                  //   },
+                  // ),
+                  BottomSheetTiles(
+                    tileString: 'help_and_supprt'.tr(),
+                    tileIcon: Icons.help_outline,
+                    theFunction: () {
                       Navigator.pushReplacementNamed(
                           context, '/help-and-support-page');
                     },
                   ),
-                  ListTile(
-                    leading: Icon(Icons.logout),
-                    title: Text('Logout'),
-                    onTap: () {
-                      Navigator.pushReplacementNamed(context, '/splash-screen');
+                  BottomSheetTiles(
+                    tileString: 'logout'.tr(),
+                    tileIcon: Icons.logout_outlined,
+                    theFunction: () {
+                      Navigator.pushReplacementNamed(context, '/auth-page');
                     },
                   ),
                 ],
