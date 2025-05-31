@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:kuku_app/constants/constant.dart';
+import 'package:kuku_app/token/token_helper.dart';
 import 'package:kuku_app/widgets/app_bar.dart';
 
 class AuthPage extends StatefulWidget {
@@ -70,6 +71,8 @@ class _AuthPageState extends State<AuthPage> {
                         Text('Login failed: ${result.exception.toString()}')),
               );
             } else {
+              String token = result.data!['tokenAuth']['token'];
+              SecureStorageHelper.saveToken(token);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Login successful'),

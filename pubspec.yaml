@@ -43,6 +43,7 @@ dependencies:
   easy_localization: ^3.0.7+1
   http: ^1.4.0
   graphql_flutter: ^5.2.0
+  http_parser: ^4.1.2
 
 flutter_icons:
   android: true
