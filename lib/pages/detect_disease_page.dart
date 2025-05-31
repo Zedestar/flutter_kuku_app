@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:kuku_app/auth/auth_class.dart';
+import 'package:kuku_app/constants/constant.dart';
 import 'package:kuku_app/widgets/app_bar.dart';
 
 class PredictDiseaseScreen extends StatefulWidget {
@@ -114,13 +115,12 @@ class _PredictDiseaseScreenState extends State<PredictDiseaseScreen> {
                   pickImage();
                 } else {
                   // If no token, show login
-                  Navigator.pushNamed(context, '/login');
+                  Navigator.pushReplacementNamed(context, '/auth-page');
                 }
               },
               // AuthService.getToken()  ?pickImage: ,
               style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.lightBlueAccent,
-                  foregroundColor: Colors.white),
+                  backgroundColor: kcolor, foregroundColor: Colors.white),
 
               child: Text("Pick Image"),
             ),
@@ -135,13 +135,11 @@ class _PredictDiseaseScreenState extends State<PredictDiseaseScreen> {
                   // If token exists, proceed with picking the image
                   cameraImage();
                 } else {
-                  // If no token, show login
-                  Navigator.pushNamed(context, '/login');
+                  Navigator.pushReplacementNamed(context, '/auth-page');
                 }
               },
               style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.lightBlueAccent,
-                  foregroundColor: Colors.white),
+                  backgroundColor: kcolor, foregroundColor: Colors.white),
               // AuthService.getToken()  ?pickImage: ,
 
               child: Text("Take picture"),

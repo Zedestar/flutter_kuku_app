@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:kuku_app/constants/constant.dart';
 import 'package:kuku_app/widgets/app_bar.dart';
 
@@ -14,8 +15,18 @@ class _AuthPageState extends State<AuthPage> {
   bool _isLogin = true;
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    _usernameController.dispose();
+    super.dispose();
+  }
 
   void _toggleAuthMode() {
     setState(() {
@@ -25,16 +36,52 @@ class _AuthPageState extends State<AuthPage> {
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      // Process login or sign-up data
-      String email = _emailController.text;
+      String username = _usernameController.text;
       String password = _passwordController.text;
 
       if (_isLogin) {
-        print('Logging in with: $email, $password');
-        // Implement your login logic here
+        print('Logging in with: $username, $password');
+
+        MutationOptions options = MutationOptions(
+          document: gql(
+            r"""
+              mutation($username: String!, $password: String!){
+                tokenAuth(username: $username, password: $password){
+                  token
+                  payload
+                }
+              }
+           """,
+          ),
+          variables: {
+            "username": username,
+            "password": password,
+          },
+        );
+
+        final client = GraphQLProvider.of(context).value;
+        client.mutate(options).then(
+          (result) {
+            if (result.hasException) {
+              print('Login failed: ${result.exception.toString()}');
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                    content:
+                        Text('Login failed: ${result.exception.toString()}')),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Login successful'),
+                ),
+              );
+              Navigator.pushReplacementNamed(context, '/home-page');
+            }
+          },
+        );
       } else {
         String confirmPassword = _confirmPasswordController.text;
-        print('Signing up with: $email, $password, $confirmPassword');
+        print('Signing up with: $username, $password, $confirmPassword');
         // Implement your sign-up logic here
       }
     }
@@ -50,12 +97,22 @@ class _AuthPageState extends State<AuthPage> {
     return null;
   }
 
+  String? _validateUsername(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your username';
+    }
+    if (value.length < 3) {
+      return 'Username must be at least 3 characters';
+    }
+    return null;
+  }
+
   String? _validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter your password';
     }
-    if (value.length < 6) {
-      return 'Password must be at least 6 characters';
+    if (value.length < 3) {
+      return 'Password must be at least 3 characters';
     }
     return null;
   }
@@ -101,13 +158,13 @@ class _AuthPageState extends State<AuthPage> {
                     ),
                     const SizedBox(height: 20.0),
                     TextFormField(
-                      controller: _emailController,
+                      controller: _usernameController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: const InputDecoration(
-                        labelText: 'Email',
+                        labelText: 'Username',
                         border: OutlineInputBorder(),
                       ),
-                      validator: _validateEmail,
+                      validator: _validateUsername,
                     ),
                     const SizedBox(height: 16.0),
                     TextFormField(

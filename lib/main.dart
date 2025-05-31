@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:kuku_app/connection/connect_url.dart';
 import 'package:kuku_app/provider/theme_mode_provider.dart';
 import 'package:kuku_app/router/router.dart';
 import 'package:kuku_app/theme/app_theme_and_styles.dart';
@@ -8,19 +10,30 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  await initHiveForFlutter();
 
+  final HttpLink httpLink = HttpLink(AppConfig.graphqlApiUrl);
+
+  final client = GraphQLClient(
+    link: httpLink,
+    cache: GraphQLCache(store: HiveStore()),
+  );
   runApp(
-    EasyLocalization(
-      supportedLocales: [
-        Locale('en'),
-        Locale('sw'),
-      ],
-      path: 'assets/languages',
-      child: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => DarkLightModeProvider()),
+    GraphQLProvider(
+      client: ValueNotifier(client),
+      child: EasyLocalization(
+        supportedLocales: [
+          Locale('en'),
+          Locale('sw'),
         ],
-        child: const MyApp(),
+        path: 'assets/languages',
+        child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+                create: (context) => DarkLightModeProvider()),
+          ],
+          child: const MyApp(),
+        ),
       ),
     ),
   );
