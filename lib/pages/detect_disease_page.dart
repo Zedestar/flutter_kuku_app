@@ -12,7 +12,7 @@ class PredictDiseaseScreen extends StatefulWidget {
   const PredictDiseaseScreen({super.key});
 
   @override
-  _PredictDiseaseScreenState createState() => _PredictDiseaseScreenState();
+  State<PredictDiseaseScreen> createState() => _PredictDiseaseScreenState();
 }
 
 class _PredictDiseaseScreenState extends State<PredictDiseaseScreen> {
@@ -138,7 +138,10 @@ class _PredictDiseaseScreenState extends State<PredictDiseaseScreen> {
               child: Text("Take picture"),
             ),
             if (_image != null) ...[
-              Image.file(_image!),
+              Image.file(
+                _image!,
+                height: 60,
+              ),
               ElevatedButton(
                 onPressed: sendImageForPrediction,
                 child: Text("Send Image for Prediction"),
