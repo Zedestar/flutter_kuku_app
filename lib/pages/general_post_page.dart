@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kuku_app/constants/constant.dart';
 import 'package:kuku_app/widgets/app_bar.dart';
 
 class GeneralPostPage extends StatefulWidget {
@@ -14,7 +15,32 @@ class _GeneralPostPageState extends State<GeneralPostPage> {
     return Scaffold(
       appBar: theAppBar(context, "Post_page"),
       body: Center(
-        child: Text("The general post page"),
+        child: Column(
+          children: [
+            Text("General Post"),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Row(
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: kcolor,
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/knowledge-post-page');
+                    },
+                    child: Text("Genearal Post"),
+                  ),
+                  Spacer(),
+                  Text("Bussiness Post")
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

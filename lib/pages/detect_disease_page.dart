@@ -139,11 +139,16 @@ class _PredictDiseaseScreenState extends State<PredictDiseaseScreen> {
             ),
             if (_image != null) ...[
               Image.file(
+                // color: kcolor,
                 _image!,
-                height: 60,
+                height: 400,
+                width: 300,
+                fit: BoxFit.cover,
               ),
               ElevatedButton(
                 onPressed: sendImageForPrediction,
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: kcolor, foregroundColor: Colors.white),
                 child: Text("Send Image for Prediction"),
               ),
             ],

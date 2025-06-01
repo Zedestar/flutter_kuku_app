@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kuku_app/pages/authentication_page.dart';
 import 'package:kuku_app/pages/help_and_support_page.dart';
 import 'package:kuku_app/pages/home_page.dart';
+import 'package:kuku_app/pages/knowledge_post.dart';
 import 'package:kuku_app/pages/profile_page.dart';
 import 'package:kuku_app/pages/sample_page.dart';
 import 'package:kuku_app/pages/splash_page.dart';
@@ -21,6 +22,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const AuthPage());
       case '/sample-page':
         return MaterialPageRoute(builder: (_) => const SamplePage());
+      case '/knowledge-post-page':
+        return MaterialPageRoute(builder: (_) => const KnowledgePostPage());
       default:
         return _errorPage();
     }
