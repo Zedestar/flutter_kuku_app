@@ -1,5 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kuku_app/constants/constant.dart';
+import 'package:kuku_app/pages/business_past_page.dart';
+import 'package:kuku_app/pages/knowledge_post.dart';
 import 'package:kuku_app/widgets/app_bar.dart';
 
 class GeneralPostPage extends StatefulWidget {
@@ -12,36 +15,26 @@ class GeneralPostPage extends StatefulWidget {
 class _GeneralPostPageState extends State<GeneralPostPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: theAppBar(context, "Post_page"),
-      body: Center(
-        child: Column(
-          children: [
-            Text("General Post"),
-            SizedBox(
-              height: 10,
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: kcolor,
+            title: Text('post_page'.tr()),
+            bottom: TabBar(
+              // indicator: Colors.white,
+              tabs: [
+                Tab(text: 'knowledge_post'),
+                Tab(text: 'business_post'),
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: Row(
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: kcolor,
-                    ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/knowledge-post-page');
-                    },
-                    child: Text("Genearal Post"),
-                  ),
-                  Spacer(),
-                  Text("Bussiness Post")
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
+          ),
+          body: TabBarView(
+            children: [
+              KnowledgePostPage(),
+              BussinessPage(),
+            ],
+          )),
     );
   }
 }
