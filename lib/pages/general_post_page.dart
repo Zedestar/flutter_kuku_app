@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:kuku_app/constants/constant.dart';
 import 'package:kuku_app/pages/business_past_page.dart';
 import 'package:kuku_app/pages/knowledge_post.dart';
-import 'package:kuku_app/widgets/app_bar.dart';
 
 class GeneralPostPage extends StatefulWidget {
   const GeneralPostPage({super.key});
@@ -16,25 +15,34 @@ class _GeneralPostPageState extends State<GeneralPostPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: kcolor,
-            title: Text('post_page'.tr()),
-            bottom: TabBar(
-              // indicator: Colors.white,
-              tabs: [
-                Tab(text: 'knowledge_post'),
-                Tab(text: 'business_post'),
+        length: 2,
+        child: Scaffold(
+          body: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) => [
+              SliverAppBar(
+                backgroundColor: kcolor,
+                centerTitle: true,
+                // pinned: true,
+                floating: true,
+                snap: true,
+                title: Text('post_page'.tr()),
+                bottom: TabBar(
+                  indicatorColor: Colors.white,
+                  tabs: [
+                    Tab(text: 'knowledge_post'),
+                    Tab(text: 'business_post'),
+                  ],
+                ),
+              ),
+            ],
+            body: TabBarView(
+              children: [
+                KnowledgePostPage(),
+                BussinessPage(),
               ],
+              //
             ),
           ),
-          body: TabBarView(
-            children: [
-              KnowledgePostPage(),
-              BussinessPage(),
-            ],
-          )),
-    );
+        ));
   }
 }

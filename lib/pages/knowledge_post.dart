@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:kuku_app/constants/constant.dart';
 import 'package:kuku_app/graphql/graphql_queries.dart';
 
 class KnowledgePostPage extends StatefulWidget {
@@ -43,8 +43,6 @@ class _KnowledgePostPageState extends State<KnowledgePostPage> {
                   itemCount: posts.length,
                   itemBuilder: (context, index) {
                     final post = posts[index];
-                    print("THis is image url ${post['pictureUrl']}");
-
                     return Card(
                       elevation: 10,
                       shape: RoundedRectangleBorder(
@@ -102,7 +100,15 @@ class _KnowledgePostPageState extends State<KnowledgePostPage> {
                                     ),
                                     Spacer(),
                                     ElevatedButton(
-                                        onPressed: null, child: Text("View"))
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: kcolor),
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context, '/generalPostDetailsView',
+                                            arguments: post);
+                                      },
+                                      child: Text("View"),
+                                    )
                                   ],
                                 )
                               ],
@@ -111,94 +117,20 @@ class _KnowledgePostPageState extends State<KnowledgePostPage> {
                         ],
                       ),
                     );
-
-                    //  GFCard(
-                    //   boxFit: BoxFit.cover,
-                    //   image: Image.asset('assets/images/icon.png'),
-                    //   title: GFListTile(
-                    //     avatar: GFAvatar(
-                    //       backgroundImage: AssetImage('your asset image'),
-                    //     ),
-                    //     title: Text('Card Title'),
-                    //     subTitle: Text('Card Sub Title'),
-                    //   ),
-                    //   content:
-                    //       Text("Some quick example text to build on the card"),
-                    //   buttonBar: GFButtonBar(
-                    //     children: <Widget>[
-                    //       GFButton(
-                    //         onPressed: () {},
-                    //         text: 'Buy',
-                    //       ),
-                    //       GFButton(
-                    //         onPressed: () {},
-                    //         text: 'Cancel',
-                    //       ),
-                    //     ],
-                    //   ),
-                    // );
-
-                    //  GFCard(
-                    //   boxFit: BoxFit.cover,
-                    //   image: post['pictureUrl'] != null
-                    //   ? Image.network(
-                    //       post['pictureUrl'],
-                    //       width: 50,
-                    //       height: 50,
-                    //       fit: BoxFit.cover,
-                    //     )
-                    //   : null,
-                    //   title: GFListTile(
-                    //     title: Text(
-                    //       post['title'] ?? 'No Title',
-                    //       style: TextStyle(fontWeight: FontWeight.bold),
-                    //     ),
-                    //     icon: Row(
-                    //       children: [
-                    //         const Icon(Icons.person),
-                    //         const SizedBox(
-                    //           width: 5,
-                    //         ),
-                    //         const CircleAvatar(
-                    //           radius: 16,
-                    //           // backgroundImage:
-                    //           // AssetImage('assets/images/user.png'),
-                    //         )
-                    //       ],
-                    //     ),
-                    //     subTitle: Text(
-                    //       post['caption'] ?? 'No Caption',
-                    //       style: const TextStyle(fontSize: 14),
-                    //     ),
-                    //     description: Text(
-                    //       "Posted by ${post['user']['username']} on ${post['createdAt']}",
-                    //       style: const TextStyle(fontSize: 12),
-                    //     ),
-                    //   ),
-                    // );
-
-                    //     ListTile(
-                    //   title: Text(post['title'] ?? 'No Title'),
-                    //   subtitle: Text(post['caption'] ?? 'No Caption'),
-                    //   leading: post['pictureUrl'] != null
-                    //       ? Image.network(
-                    //           post['pictureUrl'],
-                    //           width: 50,
-                    //           height: 50,
-                    //           fit: BoxFit.cover,
-                    //         )
-                    //       : null,
-                    //   trailing: Text(
-                    //     "Posted by ${post['user']['username']} on ${post['createdAt']}",
-                    //     style: const TextStyle(fontSize: 12),
-                    //   ),
-                    // );
                   },
                 );
               }
             },
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: kcolor,
+        onPressed: null,
+        child: Text(
+          "Create Post",
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }

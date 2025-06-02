@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kuku_app/pages/authentication_page.dart';
+import 'package:kuku_app/pages/general_post_details_view.dart';
 import 'package:kuku_app/pages/help_and_support_page.dart';
 import 'package:kuku_app/pages/home_page.dart';
 import 'package:kuku_app/pages/knowledge_post.dart';
@@ -24,6 +25,11 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const SamplePage());
       case '/knowledge-post-page':
         return MaterialPageRoute(builder: (_) => const KnowledgePostPage());
+      case '/generalPostDetailsView':
+        final post = settings.arguments as dynamic;
+        return MaterialPageRoute(
+          builder: (_) => GeneralPostDetailsView(post: post),
+        );
       default:
         return _errorPage();
     }
@@ -33,6 +39,9 @@ class RouteGenerator {
     return MaterialPageRoute(
       builder: (_) {
         return Scaffold(
+          appBar: AppBar(
+            title: Text("Page not Found"),
+          ),
           body: Center(
             child: Text("There is no such page"),
           ),
