@@ -45,6 +45,7 @@ dependencies:
   graphql_flutter: ^5.2.0
   http_parser: ^4.1.2
   getwidget: ^6.0.0
+  cached_network_image: ^3.4.1
 
 flutter_icons:
   android: true
@@ -77,6 +78,7 @@ flutter:
     - assets/lottie/lottiesSplash.json
     - assets/languages/en.json
     - assets/languages/sw.json
+    - assets/images/icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
