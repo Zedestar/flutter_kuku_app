@@ -19,3 +19,16 @@ const String generalPostQuery = r"""
                           }
                         }
                       """;
+
+const String commentsOfPostQuery = r"""
+query($id: Int!){
+  comments(id: $id){
+    id
+    body
+    createdAt
+    user{
+      username
+    }
+  }
+}
+""";

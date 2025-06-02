@@ -34,6 +34,7 @@ class _KnowledgePostPageState extends State<KnowledgePostPage> {
               } else {
                 final posts =
                     snapshot.data?.data?['posts'] as List<dynamic> ?? [];
+
                 if (posts.isEmpty) {
                   return const Center(
                     child: Text("No posts available"),
