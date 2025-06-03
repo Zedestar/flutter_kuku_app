@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
 class PostCard extends StatelessWidget {
-  const PostCard({super.key, required this.post, required this.commentsWidget});
+  const PostCard(
+      {super.key,
+      required this.post,
+      required this.commentsWidget,
+      required this.formWidget});
 
   final dynamic post;
   final Widget commentsWidget;
+  final Widget formWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -82,31 +87,10 @@ class PostCard extends StatelessWidget {
               ],
             ),
           ),
-          Row(
-            children: [
-              IconButton(
-                icon: Icon(Icons.thumb_up),
-                onPressed: () {
-                  // Handle like action
-                },
-              ),
-              IconButton(
-                icon: Icon(Icons.comment),
-                onPressed: () {
-                  // Handle comment action
-                },
-              ),
-              IconButton(
-                icon: Icon(Icons.share),
-                onPressed: () {
-                  // Handle share action
-                },
-              ),
-            ],
-          )
+          Spacer(),
+          Expanded(child: formWidget),
         ],
       ),
     );
-    ;
   }
 }

@@ -1,20 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:kuku_app/graphql/graphql_queries.dart';
+import 'package:kuku_app/widgets/app_bar.dart';
 import 'package:kuku_app/widgets/post_card.dart';
+import 'package:kuku_app/constants/constant.dart';
 
-class GeneralPostDetailsView extends StatelessWidget {
+class GeneralPostDetailsView extends StatefulWidget {
   const GeneralPostDetailsView({super.key, required this.post});
   final dynamic post;
 
   @override
+  State<GeneralPostDetailsView> createState() => _GeneralPostDetailsViewState();
+}
+
+class _GeneralPostDetailsViewState extends State<GeneralPostDetailsView> {
+  final _commentInputController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _commentInputController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Post Details'),
-      ),
+      appBar: theAppBar(context, "Post Details"),
       body: PostCard(
-        post: post,
+        post: widget.post,
         commentsWidget: GraphQLConsumer(
           builder: (GraphQLClient client) {
             return FutureBuilder<QueryResult>(
@@ -22,7 +36,7 @@ class GeneralPostDetailsView extends StatelessWidget {
                 QueryOptions(
                   document: gql(commentsOfPostQuery),
                   variables: {
-                    'id': int.parse(post['id']),
+                    'id': int.parse(widget.post['id']),
                   },
                 ),
               ),
@@ -65,6 +79,36 @@ class GeneralPostDetailsView extends StatelessWidget {
               },
             );
           },
+        ),
+        formWidget: Form(
+          child: Row(
+            children: [
+              Expanded(
+                child: TextFormField(
+                  controller: _commentInputController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Comment cannot be empty";
+                    }
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Add comment',
+                    hintText: 'Write comment here',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                  ),
+                ),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.send,
+                  size: 30,
+                  color: Colors.lightBlueAccent,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
