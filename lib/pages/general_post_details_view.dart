@@ -26,101 +26,108 @@ class _GeneralPostDetailsViewState extends State<GeneralPostDetailsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      // resizeToAvoidBottomInset: true,
       appBar: theAppBar(context, "Post Details"),
-      body: PostCard(
-        post: widget.post,
-        commentsWidget: GraphQLConsumer(
-          builder: (GraphQLClient client) {
-            final options = WatchQueryOptions(
-              document: gql(commentsOfPostQuery),
-              variables: {
-                'id': int.parse(widget.post['id']),
-              },
-              pollInterval: const Duration(seconds: 1),
-              fetchPolicy: FetchPolicy.cacheAndNetwork,
-              fetchResults: true,
-              parserFn: (data) => data,
-            );
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height * 1,
+          child: PostCard(
+            post: widget.post,
+            commentsWidget: GraphQLConsumer(
+              builder: (GraphQLClient client) {
+                final options = WatchQueryOptions(
+                  document: gql(commentsOfPostQuery),
+                  variables: {
+                    'id': int.parse(widget.post['id']),
+                  },
+                  pollInterval: const Duration(seconds: 1),
+                  fetchPolicy: FetchPolicy.cacheAndNetwork,
+                  fetchResults: true,
+                  parserFn: (data) => data,
+                );
 
-            final observableQuery = client.watchQuery(options);
+                final observableQuery = client.watchQuery(options);
 
-            return StreamBuilder<QueryResult>(
-              stream: observableQuery.stream,
-              initialData: observableQuery.latestResult,
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Center(child: Text("Error: ${snapshot.error}"));
-                }
+                return StreamBuilder<QueryResult>(
+                  stream: observableQuery.stream,
+                  initialData: observableQuery.latestResult,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(child: Text("Error: ${snapshot.error}"));
+                    }
 
-                if (!snapshot.hasData || snapshot.data!.data == null) {
-                  return const Center(child: Text("No comments available"));
-                }
+                    if (!snapshot.hasData || snapshot.data!.data == null) {
+                      return const Center(child: Text("No comments available"));
+                    }
 
-                final comments =
-                    (snapshot.data!.data!['comments'] as List<dynamic>?) ?? [];
+                    final comments =
+                        (snapshot.data!.data!['comments'] as List<dynamic>?) ??
+                            [];
 
-                if (comments.isEmpty) {
-                  return const Center(child: Text("No comments available"));
-                }
+                    if (comments.isEmpty) {
+                      return const Center(child: Text("No comments available"));
+                    }
 
-                return SizedBox(
-                  height: 300,
-                  child: ListView.builder(
-                    itemCount: comments.length,
-                    itemBuilder: (context, index) {
-                      final comment = comments[index];
-                      return ListTile(
-                        leading: CircleAvatar(radius: 16),
-                        title: Text(comment['body']),
-                        subtitle: Text(comment['user']['username']),
-                      );
-                    },
-                  ),
+                    return SizedBox(
+                      height: 300,
+                      child: ListView.builder(
+                        itemCount: comments.length,
+                        itemBuilder: (context, index) {
+                          final comment = comments[index];
+                          return ListTile(
+                            leading: CircleAvatar(radius: 16),
+                            title: Text(comment['body']),
+                            subtitle: Text(comment['user']['username']),
+                          );
+                        },
+                      ),
+                    );
+                  },
                 );
               },
-            );
-          },
-        ),
-        // formWidget: Text("There will be a form here to add comments"),
-        formWidget: Padding(
-          padding: EdgeInsets.all(0),
-          child: Form(
-            key: _formKey,
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: _commentInputController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Comment cannot be empty";
-                      }
-                      return null;
-                    },
-                    decoration: const InputDecoration(
-                      labelText: 'Add comment',
-                      hintText: 'Write comment here',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            // formWidget: Text("There will be a form here to add comments"),
+            formWidget: Padding(
+              padding: EdgeInsets.all(0),
+              child: Form(
+                key: _formKey,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: _commentInputController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Comment cannot be empty";
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                          labelText: 'Add comment',
+                          hintText: 'Write comment here',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    IconButton(
+                      onPressed: () {
+                        if (!_formKey.currentState!.validate()) {
+                          print("Ther is wrong with the form");
+                          return;
+                        }
+                      },
+                      icon: const Icon(
+                        Icons.send,
+                        size: 30,
+                        color: Colors.lightBlueAccent,
+                      ),
+                    ),
+                  ],
                 ),
-                IconButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      print("Submit: ${_commentInputController.text}");
-                      _commentInputController.clear();
-                    }
-                  },
-                  icon: const Icon(
-                    Icons.send,
-                    size: 30,
-                    color: Colors.lightBlueAccent,
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ),
