@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kuku_app/constants/constant.dart';
 import 'package:kuku_app/pages/authentication_page.dart';
 import 'package:kuku_app/pages/general_post_details_view.dart';
 import 'package:kuku_app/pages/help_and_support_page.dart';
@@ -7,6 +8,7 @@ import 'package:kuku_app/pages/knowledge_post.dart';
 import 'package:kuku_app/pages/profile_page.dart';
 import 'package:kuku_app/pages/sample_page.dart';
 import 'package:kuku_app/pages/splash_page.dart';
+import 'package:kuku_app/widgets/app_bar.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -39,11 +41,38 @@ class RouteGenerator {
     return MaterialPageRoute(
       builder: (_) {
         return Scaffold(
-          appBar: AppBar(
-            title: Text("Page not Found"),
-          ),
+          appBar: theAppBar(_, "Try again later"),
           body: Center(
-            child: Text("There is no such page"),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "The service is temporary unavailable",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 24,
+                  ),
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                OutlinedButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      _,
+                      MaterialPageRoute(
+                        builder: (_) => const HomePage(),
+                      ),
+                    );
+                  },
+                  style: OutlinedButton.styleFrom(
+                    // backgroundColor: kcolor,
+                    foregroundColor: kcolor,
+                  ),
+                  child: Text("Go Home"),
+                ),
+              ],
+            ),
           ),
         );
       },

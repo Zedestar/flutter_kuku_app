@@ -41,7 +41,7 @@ class _GeneralPostDetailsViewState extends State<GeneralPostDetailsView> {
                   variables: {
                     'id': int.parse(widget.post['id']),
                   },
-                  pollInterval: const Duration(seconds: 1),
+                  pollInterval: const Duration(seconds: 10),
                   fetchPolicy: FetchPolicy.cacheAndNetwork,
                   fetchResults: true,
                   parserFn: (data) => data,

@@ -1,6 +1,7 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:kuku_app/widgets/app_bar.dart';
+import 'package:kuku_app/constants/constant.dart';
 
 class SamplePage extends StatelessWidget {
   const SamplePage({super.key});
@@ -8,7 +9,6 @@ class SamplePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: theAppBar(context, 'My Sample'),
       body: GraphQLConsumer(
         builder: (GraphQLClient client) {
           final WatchQueryOptions options = WatchQueryOptions(
@@ -67,14 +67,186 @@ class SamplePage extends StatelessWidget {
               final samples = data?['predictedSamples'];
 
               if (samples != null && samples is List && samples.isNotEmpty) {
-                return ListView.builder(
-                  itemCount: samples.length,
-                  itemBuilder: (context, index) {
-                    return Text("Sample ${index + 1}");
-                  },
+                return CustomScrollView(
+                  slivers: [
+                    SliverAppBar(
+                      pinned: true,
+                      flexibleSpace: FlexibleSpaceBar(
+                        title: Text("My Samples"),
+                        centerTitle: true,
+                      ),
+                      backgroundColor: kcolor,
+                    ),
+                    SliverToBoxAdapter(
+                        child: SizedBox(
+                      height: 4,
+                    )),
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 270,
+                        child: BarChart(
+                          BarChartData(
+                            alignment: BarChartAlignment.spaceAround,
+                            maxY: 10,
+                            barTouchData: BarTouchData(enabled: true),
+                            titlesData: FlTitlesData(
+                              bottomTitles: AxisTitles(
+                                sideTitles: SideTitles(
+                                  showTitles: true,
+                                  getTitlesWidget: (value, meta) {
+                                    const labels = [
+                                      "NewCastle",
+                                      "Health",
+                                      "Cocci",
+                                      "salmonella",
+                                    ];
+                                    return Text(
+                                      labels[value.toInt()]
+                                          .toString()
+                                          .split('.')
+                                          .last
+                                          .toLowerCase(),
+                                    );
+                                  },
+                                  reservedSize: 42,
+                                ),
+                              ),
+                              leftTitles: AxisTitles(
+                                sideTitles: SideTitles(showTitles: true),
+                              ),
+                              rightTitles: AxisTitles(
+                                sideTitles: SideTitles(showTitles: false),
+                              ),
+                              topTitles: AxisTitles(
+                                sideTitles: SideTitles(showTitles: false),
+                              ),
+                            ),
+                            // borderData: FlBorderData(show: false),
+                            barGroups: [
+                              BarChartGroupData(x: 0, barRods: [
+                                BarChartRodData(
+                                  toY: 5,
+                                  //      (
+                                  //               expensesProviderConnector.expensesAmount[1] /
+                                  //               expensesProviderConnector.expensesAmount[0]) * 10,
+
+                                  color: Colors.blue,
+                                  width: 40,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(6),
+                                    topRight: Radius.circular(6),
+                                  ),
+                                )
+                              ]),
+                              BarChartGroupData(x: 1, barRods: [
+                                BarChartRodData(
+                                  toY: 6,
+                                  //  (expensesProviderConnector.expensesAmount[2] /
+                                  //         expensesProviderConnector.expensesAmount[0]) *
+                                  //     10,
+                                  color: Colors.lightBlueAccent,
+                                  width: 40,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(6),
+                                    topRight: Radius.circular(6),
+                                  ),
+                                ),
+                              ]),
+                              BarChartGroupData(x: 2, barRods: [
+                                BarChartRodData(
+                                  toY: 9,
+                                  //  (expensesProviderConnector.expensesAmount[3] /
+                                  //         expensesProviderConnector.expensesAmount[0]) *
+                                  //     10,
+                                  color: Colors.lightBlue,
+                                  width: 40,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(6),
+                                    topRight: Radius.circular(6),
+                                  ),
+                                ),
+                              ]),
+                              BarChartGroupData(x: 3, barRods: [
+                                BarChartRodData(
+                                  toY: 10,
+                                  //  (expensesProviderConnector.expensesAmount[4] /
+                                  //         expensesProviderConnector.expensesAmount[0]) *
+                                  //     10,
+                                  color: Colors.blueAccent,
+                                  width: 40,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(6),
+                                    topRight: Radius.circular(6),
+                                  ),
+                                )
+                              ]),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SliverGrid(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          return Card(
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Picture (can be network or asset)
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.network(
+                                    samples[index]['sampleImage'],
+                                    height: 150,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+
+                                // Time taken
+                                Row(
+                                  children: [
+                                    Icon(Icons.timer,
+                                        size: 16, color: Colors.grey),
+                                    SizedBox(width: 4),
+                                    Text(
+                                        "Time Taken: ${samples[index]['timeTaken'].toString()}",
+                                        style: TextStyle(fontSize: 14)),
+                                  ],
+                                ),
+
+                                Row(
+                                  children: [
+                                    Icon(Icons.tag,
+                                        size: 16, color: Colors.grey),
+                                    SizedBox(width: 4),
+                                    Text(
+                                        "Number: ${samples[index]['confidenceLevel'].to}",
+                                        style: TextStyle(fontSize: 14)),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        childCount: samples.length,
+                      ),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                      ),
+                    ),
+                  ],
                 );
               } else {
-                return Center(child: Text("No samples found"));
+                return Center(
+                  child: Text(
+                    "You haven't took any sample",
+                  ),
+                );
               }
             },
           );
