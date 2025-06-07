@@ -5,6 +5,7 @@ import 'package:kuku_app/connection/connect_url.dart';
 import 'package:kuku_app/provider/theme_mode_provider.dart';
 import 'package:kuku_app/router/router.dart';
 import 'package:kuku_app/theme/app_theme_and_styles.dart';
+import 'package:kuku_app/token/token_helper.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -12,10 +13,18 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await initHiveForFlutter();
 
+  final authLink = AuthLink(
+    getToken: () async {
+      final token = await SecureStorageHelper.getToken();
+      return token != null ? 'JWT $token' : null;
+    },
+  );
   final HttpLink httpLink = HttpLink(AppConfig.graphqlApiUrl);
 
+  final link = authLink.concat(httpLink);
+
   final client = GraphQLClient(
-    link: httpLink,
+    link: link,
     cache: GraphQLCache(store: HiveStore()),
   );
   runApp(

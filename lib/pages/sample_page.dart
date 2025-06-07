@@ -58,8 +58,10 @@ class SamplePage extends StatelessWidget {
                     );
                   }
                   return Center(
-                      child: Text(
-                          'GraphQL error: ${graphQLError.graphqlErrors.join(", ")}'));
+                    // child: Text(
+                    //     'GraphQL error: ${graphQLError.graphqlErrors.join(", ")}')
+                    child: Text("Login to get your samples"),
+                  );
                 }
               }
 
@@ -141,9 +143,6 @@ class SamplePage extends StatelessWidget {
                               BarChartGroupData(x: 1, barRods: [
                                 BarChartRodData(
                                   toY: 6,
-                                  //  (expensesProviderConnector.expensesAmount[2] /
-                                  //         expensesProviderConnector.expensesAmount[0]) *
-                                  //     10,
                                   color: Colors.lightBlueAccent,
                                   width: 40,
                                   borderRadius: BorderRadius.only(
@@ -155,9 +154,6 @@ class SamplePage extends StatelessWidget {
                               BarChartGroupData(x: 2, barRods: [
                                 BarChartRodData(
                                   toY: 9,
-                                  //  (expensesProviderConnector.expensesAmount[3] /
-                                  //         expensesProviderConnector.expensesAmount[0]) *
-                                  //     10,
                                   color: Colors.lightBlue,
                                   width: 40,
                                   borderRadius: BorderRadius.only(
@@ -166,20 +162,20 @@ class SamplePage extends StatelessWidget {
                                   ),
                                 ),
                               ]),
-                              BarChartGroupData(x: 3, barRods: [
-                                BarChartRodData(
-                                  toY: 10,
-                                  //  (expensesProviderConnector.expensesAmount[4] /
-                                  //         expensesProviderConnector.expensesAmount[0]) *
-                                  //     10,
-                                  color: Colors.blueAccent,
-                                  width: 40,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(6),
-                                    topRight: Radius.circular(6),
-                                  ),
-                                )
-                              ]),
+                              BarChartGroupData(
+                                x: 3,
+                                barRods: [
+                                  BarChartRodData(
+                                    toY: 10,
+                                    color: Colors.blueAccent,
+                                    width: 40,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(6),
+                                      topRight: Radius.circular(6),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -198,10 +194,13 @@ class SamplePage extends StatelessWidget {
                               children: [
                                 // Picture (can be network or asset)
                                 ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(12),
+                                    topRight: Radius.circular(12),
+                                  ),
                                   child: Image.network(
                                     samples[index]['sampleImage'],
-                                    height: 150,
+                                    height: 131,
                                     width: double.infinity,
                                     fit: BoxFit.cover,
                                   ),
@@ -214,19 +213,28 @@ class SamplePage extends StatelessWidget {
                                         size: 16, color: Colors.grey),
                                     SizedBox(width: 4),
                                     Text(
-                                        "Time Taken: ${samples[index]['timeTaken'].toString()}",
+                                        "Was: ${samples[index]['timeTaken'].toString()}",
                                         style: TextStyle(fontSize: 14)),
                                   ],
                                 ),
 
                                 Row(
                                   children: [
-                                    Icon(Icons.tag,
-                                        size: 16, color: Colors.grey),
+                                    Text(
+                                      samples[index]['diseaseNamePredicted']
+                                          .toString()
+                                          .toLowerCase(),
+                                      style: TextStyle(fontSize: 12),
+                                    ),
                                     SizedBox(width: 4),
                                     Text(
-                                        "Number: ${samples[index]['confidenceLevel'].to}",
-                                        style: TextStyle(fontSize: 14)),
+                                      double.parse((samples[index]
+                                                      ['confidenceLevel'] *
+                                                  100)
+                                              .toString())
+                                          .toStringAsFixed(0),
+                                      style: TextStyle(fontSize: 14),
+                                    ),
                                   ],
                                 ),
                               ],
@@ -236,8 +244,9 @@ class SamplePage extends StatelessWidget {
                         childCount: samples.length,
                       ),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                      ),
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 2,
+                          mainAxisSpacing: 1),
                     ),
                   ],
                 );
