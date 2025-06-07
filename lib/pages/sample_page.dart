@@ -84,101 +84,127 @@ class SamplePage extends StatelessWidget {
                       height: 4,
                     )),
                     SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 270,
-                        child: BarChart(
-                          BarChartData(
-                            alignment: BarChartAlignment.spaceAround,
-                            maxY: 10,
-                            barTouchData: BarTouchData(enabled: true),
-                            titlesData: FlTitlesData(
-                              bottomTitles: AxisTitles(
-                                sideTitles: SideTitles(
-                                  showTitles: true,
-                                  getTitlesWidget: (value, meta) {
-                                    const labels = [
-                                      "NewCastle",
-                                      "Health",
-                                      "Cocci",
-                                      "salmonella",
-                                    ];
-                                    return Text(
-                                      labels[value.toInt()]
-                                          .toString()
-                                          .split('.')
-                                          .last
-                                          .toLowerCase(),
-                                    );
-                                  },
-                                  reservedSize: 42,
-                                ),
-                              ),
-                              leftTitles: AxisTitles(
-                                sideTitles: SideTitles(showTitles: true),
-                              ),
-                              rightTitles: AxisTitles(
-                                sideTitles: SideTitles(showTitles: false),
-                              ),
-                              topTitles: AxisTitles(
-                                sideTitles: SideTitles(showTitles: false),
-                              ),
-                            ),
-                            // borderData: FlBorderData(show: false),
-                            barGroups: [
-                              BarChartGroupData(x: 0, barRods: [
-                                BarChartRodData(
-                                  toY: 5,
-                                  //      (
-                                  //               expensesProviderConnector.expensesAmount[1] /
-                                  //               expensesProviderConnector.expensesAmount[0]) * 10,
+                      child: Query(
+                        options: QueryOptions(
+                          document: gql(
+                            """
+                                query {
+                                  diseaseCount
+                                }
+                              """,
+                          ),
+                          fetchPolicy: FetchPolicy.networkOnly,
+                        ),
+                        builder: (QueryResult result,
+                            {VoidCallback? refetch, FetchMore? fetchMore}) {
+                          final data = result.data?['diseaseCount'];
 
-                                  color: Colors.blue,
-                                  width: 40,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(6),
-                                    topRight: Radius.circular(6),
-                                  ),
-                                )
-                              ]),
-                              BarChartGroupData(x: 1, barRods: [
-                                BarChartRodData(
-                                  toY: 6,
-                                  color: Colors.lightBlueAccent,
-                                  width: 40,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(6),
-                                    topRight: Radius.circular(6),
-                                  ),
-                                ),
-                              ]),
-                              BarChartGroupData(x: 2, barRods: [
-                                BarChartRodData(
-                                  toY: 9,
-                                  color: Colors.lightBlue,
-                                  width: 40,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(6),
-                                    topRight: Radius.circular(6),
-                                  ),
-                                ),
-                              ]),
-                              BarChartGroupData(
-                                x: 3,
-                                barRods: [
-                                  BarChartRodData(
-                                    toY: 10,
-                                    color: Colors.blueAccent,
-                                    width: 40,
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(6),
-                                      topRight: Radius.circular(6),
+                          if (data == null) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          return SizedBox(
+                            height: 270,
+                            child: BarChart(
+                              BarChartData(
+                                alignment: BarChartAlignment.spaceAround,
+                                maxY: 10,
+                                barTouchData: BarTouchData(enabled: true),
+                                titlesData: FlTitlesData(
+                                  bottomTitles: AxisTitles(
+                                    sideTitles: SideTitles(
+                                      showTitles: true,
+                                      getTitlesWidget: (value, meta) {
+                                        const labels = [
+                                          "NewCastle",
+                                          "Health",
+                                          "Cocci",
+                                          "salmonella",
+                                        ];
+                                        return Text(
+                                          labels[value.toInt()]
+                                              .toString()
+                                              .split('.')
+                                              .last
+                                              .toLowerCase(),
+                                        );
+                                      },
+                                      reservedSize: 42,
                                     ),
-                                  )
+                                  ),
+                                  leftTitles: AxisTitles(
+                                    sideTitles: SideTitles(showTitles: true),
+                                  ),
+                                  rightTitles: AxisTitles(
+                                    sideTitles: SideTitles(showTitles: false),
+                                  ),
+                                  topTitles: AxisTitles(
+                                    sideTitles: SideTitles(showTitles: false),
+                                  ),
+                                ),
+                                // borderData: FlBorderData(show: false),
+                                barGroups: [
+                                  BarChartGroupData(x: 0, barRods: [
+                                    BarChartRodData(
+                                      toY: (((data[0] as int).toDouble() /
+                                              (data[4] as int).toDouble()) *
+                                          10),
+                                      color: Colors.blue,
+                                      width: 40,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(6),
+                                        topRight: Radius.circular(6),
+                                      ),
+                                    )
+                                  ]),
+                                  BarChartGroupData(x: 1, barRods: [
+                                    BarChartRodData(
+                                      toY: (((data[1] as int).toDouble() /
+                                              (data[4] as int).toDouble()) *
+                                          10),
+                                      color: Colors.lightBlueAccent,
+                                      width: 40,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(6),
+                                        topRight: Radius.circular(6),
+                                      ),
+                                    ),
+                                  ]),
+                                  BarChartGroupData(x: 2, barRods: [
+                                    BarChartRodData(
+                                      toY: (((data[2] as int).toDouble() /
+                                              (data[4] as int).toDouble()) *
+                                          10),
+                                      color: Colors.lightBlue,
+                                      width: 40,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(6),
+                                        topRight: Radius.circular(6),
+                                      ),
+                                    ),
+                                  ]),
+                                  BarChartGroupData(
+                                    x: 3,
+                                    barRods: [
+                                      BarChartRodData(
+                                        toY: (((data[3] as int).toDouble() /
+                                                (data[4] as int).toDouble()) *
+                                            10),
+                                        color: Colors.blueAccent,
+                                        width: 40,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(6),
+                                          topRight: Radius.circular(6),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ],
                               ),
-                            ],
-                          ),
-                        ),
+                            ),
+                          );
+                        },
                       ),
                     ),
                     SliverGrid(
