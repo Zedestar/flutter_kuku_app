@@ -47,6 +47,13 @@ class _PredictDiseaseScreenState extends State<PredictDiseaseScreen> {
     // var uri = Uri.parse(AppConfig.apiUrl);
     var request = http.MultipartRequest('POST', uri);
 
+    final token = await SecureStorageHelper.getToken();
+    if (token == null) {
+      print("No token found");
+      return;
+    }
+
+    request.headers['Authorization'] = 'Bearer $token';
     var multipartFile = await http.MultipartFile.fromPath(
       'sample_image',
       _image!.path,
