@@ -44,6 +44,7 @@ class _KnowledgePostPageState extends State<KnowledgePostPage> {
                   itemCount: posts.length,
                   itemBuilder: (context, index) {
                     final post = posts[index];
+                    print(post['pictureUrl']);
                     return Card(
                       elevation: 10,
                       shape: RoundedRectangleBorder(

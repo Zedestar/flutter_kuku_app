@@ -6,6 +6,7 @@ import 'package:kuku_app/pages/detect_disease_page.dart';
 import 'package:kuku_app/pages/general_chatting_page.dart';
 import 'package:kuku_app/pages/general_post_page.dart';
 import 'package:kuku_app/pages/sample_page.dart';
+import 'package:kuku_app/token/token_helper.dart';
 import 'package:kuku_app/widgets/bottom_navigation_items.dart';
 import 'package:kuku_app/widgets/bottom_tiles_tiles.dart';
 import 'package:provider/provider.dart';
@@ -121,8 +122,25 @@ class _HomePageState extends State<HomePage> {
                   BottomSheetTiles(
                     tileString: 'logout'.tr(),
                     tileIcon: Icons.logout_outlined,
-                    theFunction: () {
-                      Navigator.pushReplacementNamed(context, '/auth-page');
+                    theFunction: () async {
+                      // Navigator.pushReplacementNamed(context, '/auth-page');
+                      await SecureStorageHelper.deleteToken();
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Notification"),
+                            content: Text("Logged out successful"),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Okay"))
+                            ],
+                          );
+                        },
+                      );
                     },
                   ),
                 ],

@@ -66,7 +66,6 @@ class RouteGenerator {
                     );
                   },
                   style: OutlinedButton.styleFrom(
-                    // backgroundColor: kcolor,
                     foregroundColor: kcolor,
                   ),
                   child: Text("Go Home"),
