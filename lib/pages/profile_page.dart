@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+// import 'package:kuku_app/graphql/graphql_mutations.dart';
 import 'package:kuku_app/token/token_helper.dart';
 import 'package:kuku_app/widgets/app_bar.dart';
+import 'package:kuku_app/widgets/form_input_widget.dart';
+import 'dart:io';
+import 'package:http_parser/http_parser.dart';
+import 'package:http/http.dart' as http;
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -12,6 +18,23 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   String? present;
+  File? _image;
+  final profileNameEditingController = TextEditingController();
+  final bioEditingController = TextEditingController();
+  final faceBookeEditingController = TextEditingController();
+  final phoneEditingController = TextEditingController();
+  final locationEditingController = TextEditingController();
+
+  Future<void> pickImage() async {
+    final pickImage = ImagePicker();
+    final pickedFile = await pickImage.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
+
   void checkingIfUserHasLoggedIn() async {
     final token = await SecureStorageHelper.getToken();
     setState(() {
@@ -23,6 +46,16 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     checkingIfUserHasLoggedIn();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    phoneEditingController.dispose();
+    bioEditingController.dispose();
+    faceBookeEditingController.dispose();
+    profileNameEditingController.dispose();
+    locationEditingController.dispose();
   }
 
   @override
@@ -84,8 +117,186 @@ class _ProfilePageState extends State<ProfilePage> {
                               children: [
                                 Text("You dont have profile yet"),
                                 OutlinedButton(
-                                    onPressed: null,
-                                    child: Text("Create Profile"))
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return FractionallySizedBox(
+                                            heightFactor: 0.8,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Form(
+                                                child: Column(
+                                                  children: [
+                                                    FormInputWidget(
+                                                      inputLabel: "Bio",
+                                                      inputHint:
+                                                          "Enter you bio",
+                                                      maxmumlength: 250,
+                                                      theController:
+                                                          bioEditingController,
+                                                      textType:
+                                                          TextInputType.text,
+                                                    ),
+                                                    FormInputWidget(
+                                                      inputLabel: "Location",
+                                                      inputHint:
+                                                          "Enter you Location",
+                                                      maxmumlength: 50,
+                                                      theController:
+                                                          locationEditingController,
+                                                      textType:
+                                                          TextInputType.text,
+                                                    ),
+                                                    FormInputWidget(
+                                                      inputLabel: "Phone",
+                                                      inputHint:
+                                                          "Enter you phonenumber",
+                                                      maxmumlength: 114,
+                                                      theController:
+                                                          phoneEditingController,
+                                                      textType:
+                                                          TextInputType.number,
+                                                    ),
+                                                    FormInputWidget(
+                                                      inputLabel: "Email",
+                                                      inputHint:
+                                                          "Enter you email",
+                                                      maxmumlength: 25,
+                                                      theController:
+                                                          faceBookeEditingController,
+                                                      textType: TextInputType
+                                                          .emailAddress,
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: pickImage,
+                                                      child: _image == null
+                                                          ? Container(
+                                                              height: 150,
+                                                              width: 150,
+                                                              color: Colors
+                                                                  .grey[300],
+                                                              child: Icon(Icons
+                                                                  .add_a_photo),
+                                                            )
+                                                          : Image.file(
+                                                              _image!,
+                                                              height: 150,
+                                                              width: 150,
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                    ),
+                                                    GraphQLConsumer(
+                                                      builder: (GraphQLClient
+                                                          client) {
+                                                        return ElevatedButton(
+                                                          onPressed: () async {
+                                                            if (_image ==
+                                                                null) {
+                                                              // handle no image selected, maybe show error or return
+                                                              print(
+                                                                  'No image selected');
+                                                              return;
+                                                            }
+
+                                                            // Read bytes from the file
+                                                            final bytes =
+                                                                await _image!
+                                                                    .readAsBytes();
+
+                                                            // Create MultipartFile from bytes
+                                                            final multipartFile =
+                                                                http.MultipartFile
+                                                                    .fromBytes(
+                                                              'profileImage',
+                                                              bytes,
+                                                              filename: _image!
+                                                                  .path
+                                                                  .split('/')
+                                                                  .last,
+                                                              contentType:
+                                                                  MediaType(
+                                                                      'image',
+                                                                      'jpeg'), // or 'png' based on file type
+                                                            );
+
+                                                            // Now create mutation options with the multipartFile in variables
+                                                            final MutationOptions
+                                                                options =
+                                                                MutationOptions(
+                                                              document: gql("""
+                                                                      mutation CreateProfile(
+                                                                        \$bio: String!,
+                                                                        \$location: String!,
+                                                                        \$phone: String!,
+                                                                        \$email: String!,
+                                                                        \$profileImage: Upload!
+                                                                      ) {
+                                                                        createProfile(
+                                                                          bio: \$bio,
+                                                                          location: \$location,
+                                                                          phone: \$phone,
+                                                                          email: \$email,
+                                                                          profileImage: \$profileImage
+                                                                        ) {
+                                                                          profile {
+                                                                            bio
+                                                                            profileUrl
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    """),
+                                                              variables: {
+                                                                'bio':
+                                                                    bioEditingController
+                                                                        .text,
+                                                                'location':
+                                                                    locationEditingController
+                                                                        .text,
+                                                                'phone':
+                                                                    phoneEditingController
+                                                                        .text,
+                                                                'email':
+                                                                    faceBookeEditingController
+                                                                        .text,
+                                                                'profileImage':
+                                                                    multipartFile, // here we pass the multipart file
+                                                              },
+                                                            );
+
+                                                            // Perform the mutation
+                                                            final result =
+                                                                await client
+                                                                    .mutate(
+                                                                        options);
+
+                                                            if (result
+                                                                .hasException) {
+                                                              print(result
+                                                                  .exception
+                                                                  .toString());
+                                                            } else {
+                                                              print(
+                                                                  result.data);
+                                                              // Maybe show success or update UI here
+                                                            }
+                                                          },
+                                                          child: Text(
+                                                              "Create Profile"),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                  },
+                                  child: Text("Create Profile"),
+                                ),
                               ],
                             ),
                           );

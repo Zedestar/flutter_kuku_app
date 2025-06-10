@@ -43,7 +43,7 @@ class _PredictDiseaseScreenState extends State<PredictDiseaseScreen> {
   Future<void> sendImageForPrediction() async {
     if (_image == null) return;
 
-    var uri = Uri.parse('http://192.168.1.86:8000/predict/');
+    var uri = Uri.parse('http://192.168.1.112:8000/predict/');
     // var uri = Uri.parse(AppConfig.apiUrl);
     var request = http.MultipartRequest('POST', uri);
 
@@ -146,7 +146,6 @@ class _PredictDiseaseScreenState extends State<PredictDiseaseScreen> {
             ),
             if (_image != null) ...[
               Image.file(
-                // color: kcolor,
                 _image!,
                 height: 400,
                 width: 300,

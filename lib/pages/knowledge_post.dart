@@ -31,6 +31,25 @@ class _KnowledgePostPageState extends State<KnowledgePostPage> {
                 return Center(
                   child: Text("Shapshot error ${snapshot.error}"),
                 );
+              }
+              if (snapshot.data!.hasException) {
+                final graphQLError = snapshot.data!.exception;
+                if (graphQLError != null) {
+                  if (graphQLError.linkException is LinkException) {
+                    return Center(
+                      child: Text("The server is temporary unvailable"),
+                    );
+                  }
+                  return Center(
+                    // child: Text(
+                    //     'GraphQL error: ${graphQLError.graphqlErrors.join(", ")}')
+                    child: Text("Login to get your samples"),
+                  );
+                } else {
+                  return Center(
+                    child: Text("There is an error, related to the server"),
+                  );
+                }
               } else {
                 final posts =
                     snapshot.data?.data?['posts'] as List<dynamic> ?? [];
