@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:http_parser/http_parser.dart';
@@ -40,70 +41,70 @@ class _PredictDiseaseScreenState extends State<PredictDiseaseScreen> {
   }
 
   // To send image for prediction
-  Future<void> sendImageForPrediction() async {
-    if (_image == null) return;
+  // Future<void> sendImageForPrediction() async {
+  //   if (_image == null) return;
 
-    var uri = Uri.parse('http://192.168.1.112:8000/predict/');
-    // var uri = Uri.parse(AppConfig.apiUrl);
-    var request = http.MultipartRequest('POST', uri);
+  //   var uri = Uri.parse('http://192.168.1.112:8000/predict/');
+  //   // var uri = Uri.parse(AppConfig.apiUrl);
+  //   var request = http.MultipartRequest('POST', uri);
 
-    final token = await SecureStorageHelper.getToken();
-    if (token == null) {
-      print("No token found");
-      return;
-    }
+  //   final token = await SecureStorageHelper.getToken();
+  //   if (token == null) {
+  //     print("No token found");
+  //     return;
+  //   }
 
-    request.headers['Authorization'] = 'Bearer $token';
-    var multipartFile = await http.MultipartFile.fromPath(
-      'sample_image',
-      _image!.path,
-      contentType: MediaType('application', 'octet-stream'),
-    ); // Set the correct media type for the image
-    request.files.add(multipartFile);
+  //   request.headers['Authorization'] = 'Bearer $token';
+  //   var multipartFile = await http.MultipartFile.fromPath(
+  //     'sample_image',
+  //     _image!.path,
+  //     contentType: MediaType('application', 'octet-stream'),
+  //   ); // Set the correct media type for the image
+  //   request.files.add(multipartFile);
 
-    // Send the request and get the streamed response
-    var streamedResponse = await request.send();
+  //   // Send the request and get the streamed response
+  //   var streamedResponse = await request.send();
 
-    // Convert streamedResponse to a normal response
-    var response = await http.Response.fromStream(streamedResponse);
+  //   // Convert streamedResponse to a normal response
+  //   var response = await http.Response.fromStream(streamedResponse);
 
-    // Decode the JSON response body
-    var data = jsonDecode(response.body);
-    print(data);
+  //   // Decode the JSON response body
+  //   var data = jsonDecode(response.body);
+  //   print(data);
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      print("Prediction Success");
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Prediction Result'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('Prediction: ${data['prediction']}'),
-                Text(
-                    'Confidence Level: ${data['confidence_level'].toStringAsFixed(2)}'),
-                Text('Time Taken: ${data['time_taken']}'),
-              ],
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                },
-                child: Text('Close'),
-              ),
-            ],
-          );
-        },
-      );
+  //   if (response.statusCode == 200 || response.statusCode == 201) {
+  //     print("Prediction Success");
+  //     showDialog(
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return AlertDialog(
+  //           title: Text('Prediction Result'),
+  //           content: Column(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               Text('Prediction: ${data['prediction']}'),
+  //               Text(
+  //                   'Confidence Level: ${data['confidence_level'].toStringAsFixed(2)}'),
+  //               Text('Time Taken: ${data['time_taken']}'),
+  //             ],
+  //           ),
+  //           actions: <Widget>[
+  //             TextButton(
+  //               onPressed: () {
+  //                 Navigator.of(context).pop(); // Close the dialog
+  //               },
+  //               child: Text('Close'),
+  //             ),
+  //           ],
+  //         );
+  //       },
+  //     );
 
-      // Handle the response
-    } else {
-      print("Prediction Failed");
-    }
-  }
+  //     // Handle the response
+  //   } else {
+  //     print("Prediction Failed");
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -151,11 +152,49 @@ class _PredictDiseaseScreenState extends State<PredictDiseaseScreen> {
                 width: 300,
                 fit: BoxFit.cover,
               ),
-              ElevatedButton(
-                onPressed: sendImageForPrediction,
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: kcolor, foregroundColor: Colors.white),
-                child: Text("Send Image for Prediction"),
+              // ElevatedButton(
+              //   onPressed: sendImageForPrediction,
+              //   style: ElevatedButton.styleFrom(
+              //       backgroundColor: kcolor, foregroundColor: Colors.white),
+              //   child: Text("Make prediction"),
+              // ),
+              GraphQLConsumer(
+                builder: (GraphQLClient client) {
+                  return ElevatedButton(
+                    onPressed: () async {
+                      // Reading the byte from the file
+                      final byte = await _image!.readAsBytes();
+                      // Creating multipart from byte
+                      final multipartFile = http.MultipartFile.fromBytes(
+                        "sampleImage",
+                        byte,
+                        filename: _image!.path.split('/').last,
+                        contentType: MediaType('image', 'jpeg'),
+                      );
+
+                      final MutationOptions options = MutationOptions(
+                        document: gql(r"""
+                            mutation($sampleImage:Upload!){
+                            predictDisease(sampleImage:$sampleImage){
+                              prediction
+                              confidenceLevel
+                            }
+                          }     
+                          """),
+                        variables: {"sampleImage": multipartFile},
+                      );
+                      final result = await client.mutate(options);
+
+                      if (result.hasException) {
+                        print(result.exception.toString());
+                      } else {
+                        print(result.data);
+                        // Maybe show success or update UI here
+                      }
+                    },
+                    child: Text("Diagnonize"),
+                  );
+                },
               ),
             ],
           ],
