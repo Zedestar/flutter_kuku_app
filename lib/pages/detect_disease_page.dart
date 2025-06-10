@@ -186,10 +186,24 @@ class _PredictDiseaseScreenState extends State<PredictDiseaseScreen> {
                       final result = await client.mutate(options);
 
                       if (result.hasException) {
+                        print("Still there is a problem");
                         print(result.exception.toString());
                       } else {
-                        print(result.data);
-                        // Maybe show success or update UI here
+                        Navigator.pushReplacementNamed(context, '/sample-page');
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Diagnoise successful"),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text("Succeful"),
+                                    Text("Succeful")
+                                  ],
+                                ),
+                              );
+                            });
                       }
                     },
                     child: Text("Diagnonize"),
