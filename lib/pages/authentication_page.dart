@@ -85,7 +85,47 @@ class _AuthPageState extends State<AuthPage> {
       } else {
         String confirmPassword = _confirmPasswordController.text;
         print('Signing up with: $username, $password, $confirmPassword');
-        // Implement your sign-up logic here
+
+        // The signing up logic
+        MutationOptions options = MutationOptions(
+            document: gql(
+              r"""
+              mutation($username:String!, $email:String!, $password:String!){
+              createUser(username:$username, email:$email, password:$password){
+              user{
+                username
+              } 
+            }
+            }
+           """,
+            ),
+            variables: {
+              "username": _usernameController.text,
+              "email": _emailController.text,
+              "password": _passwordController.text
+            });
+
+        final client = GraphQLProvider.of(context).value;
+        client.mutate(options).then(
+          (result) {
+            if (result.hasException) {
+              print('Login failed: ${result.exception.toString()}');
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                    content:
+                        Text('Login failed: ${result.exception.toString()}')),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('You have created account successful'),
+                ),
+              );
+              Navigator.pushReplacementNamed(context, '/auth-page');
+            }
+          },
+        );
+        // Signing up logic
       }
     }
   }
@@ -170,6 +210,19 @@ class _AuthPageState extends State<AuthPage> {
                       validator: _validateUsername,
                     ),
                     const SizedBox(height: 16.0),
+                    if (!_isLogin) ...[
+                      const SizedBox(height: 16.0),
+                      TextFormField(
+                        controller: _emailController,
+                        obscureText: false,
+                        decoration: const InputDecoration(
+                          labelText: 'Email',
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: _validateEmail,
+                      ),
+                    ],
+                    const SizedBox(height: 24.0),
                     TextFormField(
                       controller: _passwordController,
                       obscureText: true,
