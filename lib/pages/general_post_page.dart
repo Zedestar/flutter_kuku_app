@@ -15,34 +15,35 @@ class _GeneralPostPageState extends State<GeneralPostPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          body: NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) => [
-              SliverAppBar(
-                backgroundColor: kcolor,
-                centerTitle: true,
-                // pinned: true,
-                floating: true,
-                snap: true,
-                title: Text('post_page'.tr()),
-                bottom: TabBar(
-                  indicatorColor: Colors.white,
-                  tabs: [
-                    Tab(text: 'knowledge_post'),
-                    Tab(text: 'business_post'),
-                  ],
-                ),
+      length: 2,
+      child: Scaffold(
+        body: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            SliverAppBar(
+              backgroundColor: kcolor,
+              centerTitle: true,
+              // pinned: true,
+              floating: true,
+              snap: true,
+              title: Text('post_page'.tr()),
+              bottom: TabBar(
+                indicatorColor: Colors.white,
+                tabs: [
+                  Tab(text: 'knowledge_post'),
+                  Tab(text: 'business_post'),
+                ],
               ),
-            ],
-            body: TabBarView(
-              children: [
-                KnowledgePostPage(),
-                BussinessPage(),
-              ],
-              //
             ),
+          ],
+          body: TabBarView(
+            children: [
+              KnowledgePostPage(),
+              BussinessPage(),
+            ],
+            //
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
