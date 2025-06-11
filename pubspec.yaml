@@ -47,6 +47,8 @@ dependencies:
   getwidget: ^6.0.0
   cached_network_image: ^3.4.1
   fl_chart: ^1.0.0
+  share_plus: ^11.0.0
+  flutter_markdown: ^0.7.7+1
 
 flutter_icons:
   android: true

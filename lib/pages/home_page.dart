@@ -1,7 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-
+import 'package:share_plus/share_plus.dart';
 import 'package:kuku_app/pages/detect_disease_page.dart';
 import 'package:kuku_app/pages/general_chatting_page.dart';
 import 'package:kuku_app/pages/general_post_page.dart';
@@ -99,7 +99,13 @@ class _HomePageState extends State<HomePage> {
                     tileString: 'share_app'.tr(),
                     tileIcon: Icons.share_outlined,
                     theFunction: () {
-                      Navigator.pushReplacementNamed(context, '/share-page');
+                      // Navigator.pushReplacementNamed(context, '/share-page');
+                      SharePlus.instance.share(
+                        ShareParams(
+                          title: "Install the Kuku ap now",
+                          text: 'Check out kuku app: https://yourapp.com',
+                        ),
+                      );
                     },
                   ),
 
