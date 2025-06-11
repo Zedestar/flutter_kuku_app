@@ -80,6 +80,7 @@ flutter:
     - assets/languages/en.json
     - assets/languages/sw.json
     - assets/images/icon.png
+    - assets/images/defaultPic.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

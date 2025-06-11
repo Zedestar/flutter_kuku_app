@@ -109,7 +109,16 @@ class _KnowledgePostPageState extends State<KnowledgePostPage> {
                                 ),
                                 Row(
                                   children: [
-                                    CircleAvatar(),
+                                    CircleAvatar(
+                                      backgroundImage: post['user']
+                                                  ['profilePick'] !=
+                                              null
+                                          ? NetworkImage(
+                                              post['user']['profilePick'])
+                                          : AssetImage(
+                                                  'assets/images/defaultPic.jpg')
+                                              as ImageProvider,
+                                    ), //Here there should be a change
                                     SizedBox(
                                       width: 8,
                                     ),

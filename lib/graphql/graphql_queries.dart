@@ -11,24 +11,27 @@ const String generalPostQuery = r"""
                             dislikes{
                               id
                               username
+                              profilePick
                             }
                             user{
                               id
                               username
+                              profilePick
                             }
                           }
                         }
                       """;
 
 const String commentsOfPostQuery = r"""
-query($id: Int!){
-  comments(id: $id){
-    id
-    body
-    createdAt
-    user{
-      username
-    }
-  }
-}
-""";
+                        query($id: Int!){
+                          comments(id: $id){
+                            id
+                            body
+                            createdAt
+                            user{
+                              username
+                              profilePick
+                            }
+                          }
+                        }
+                        """;

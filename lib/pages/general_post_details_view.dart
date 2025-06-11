@@ -76,7 +76,13 @@ class _GeneralPostDetailsViewState extends State<GeneralPostDetailsView> {
                         itemBuilder: (context, index) {
                           final comment = comments[index];
                           return ListTile(
-                            leading: CircleAvatar(radius: 16),
+                            leading: CircleAvatar(
+                              backgroundImage: comment['user']['profilePick'] !=
+                                      null
+                                  ? NetworkImage(comment['user']['profilePick'])
+                                  : AssetImage('assets/images/defaultPic.jpg')
+                                      as ImageProvider,
+                            ),
                             title: Text(comment['body']),
                             subtitle: Text(comment['user']['username']),
                           );

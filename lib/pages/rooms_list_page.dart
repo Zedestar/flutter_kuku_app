@@ -23,9 +23,9 @@ class _RoomListPageState extends State<RoomListPage> {
                     id
                     host{
                       username
-                      
+                      profilePick
                     }
-                    
+                   
                     description
                     participants{
                       username
@@ -101,23 +101,34 @@ class _RoomListPageState extends State<RoomListPage> {
                                 // Time taken
                                 Row(
                                   children: [
-                                    Icon(Icons.timer,
-                                        size: 16, color: Colors.grey),
-                                    SizedBox(width: 4),
-                                    Text(rooms[index]['host']['username'],
-                                        style: TextStyle(fontSize: 14)),
-                                  ],
-                                ),
-
-                                Row(
-                                  children: [
-                                    Text(rooms[index]['host']['username']),
+                                    CircleAvatar(
+                                      backgroundImage: rooms[index]['host']
+                                                  ['profilePick'] !=
+                                              null
+                                          ? NetworkImage(rooms[index]['host']
+                                              ['profilePick'])
+                                          : AssetImage(
+                                                  'assets/images/defaultPic.jpg')
+                                              as ImageProvider,
+                                    ),
                                     SizedBox(width: 4),
                                     Text(
                                       rooms[index]['host']['username'],
-                                      style: TextStyle(fontSize: 14),
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600),
                                     ),
                                   ],
+                                ),
+
+                                SizedBox(width: 4),
+
+                                Divider(),
+
+                                SizedBox(width: 4),
+                                Text(
+                                  rooms[index]['description'],
+                                  style: TextStyle(fontSize: 14),
                                 ),
                               ],
                             ),
