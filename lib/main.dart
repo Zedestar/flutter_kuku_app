@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:kuku_app/connection/connect_url.dart';
+import 'package:kuku_app/provider/checking_logged_inuser_provider.dart';
 import 'package:kuku_app/provider/theme_mode_provider.dart';
 import 'package:kuku_app/router/router.dart';
 import 'package:kuku_app/theme/app_theme_and_styles.dart';
@@ -40,6 +41,7 @@ void main() async {
           providers: [
             ChangeNotifierProvider(
                 create: (context) => DarkLightModeProvider()),
+            ChangeNotifierProvider(create: (context) => CheckingUserPresence()),
           ],
           child: const MyApp(),
         ),

@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:kuku_app/provider/checking_logged_inuser_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:kuku_app/pages/detect_disease_page.dart';
 import 'package:kuku_app/pages/general_chatting_page.dart';
@@ -22,6 +23,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  bool? present = false;
+
   final List<Widget> _pages = [
     GeneralPostPage(),
     GeneralChatPage(),
@@ -29,7 +32,7 @@ class _HomePageState extends State<HomePage> {
     SamplePage(),
   ];
 
-  void showSettingDialog(BuildContext context) {
+  void showSettingDialog(BuildContext context, bool present) {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -125,30 +128,41 @@ class _HomePageState extends State<HomePage> {
                           context, '/help-and-support-page');
                     },
                   ),
-                  BottomSheetTiles(
-                    tileString: 'logout'.tr(),
-                    tileIcon: Icons.logout_outlined,
-                    theFunction: () async {
-                      // Navigator.pushReplacementNamed(context, '/auth-page');
-                      await SecureStorageHelper.deleteToken();
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text("Notification"),
-                            content: Text("Logged out successful"),
-                            actions: [
-                              TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text("Okay"))
-                            ],
-                          );
-                        },
-                      );
-                    },
-                  ),
+
+                  present
+                      ? BottomSheetTiles(
+                          tileString: 'logout'.tr(),
+                          tileIcon: Icons.logout_outlined,
+                          theFunction: () async {
+                            // Navigator.pushReplacementNamed(context, '/auth-page');
+                            await SecureStorageHelper.deleteToken();
+                            Navigator.pushReplacementNamed(
+                                context, "/auth-page");
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Notification"),
+                                  content: Text("Logged out successful"),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text("Okay"))
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        )
+                      : BottomSheetTiles(
+                          tileString: 'login',
+                          tileIcon: Icons.logout_outlined,
+                          theFunction: () {
+                            Navigator.pushNamed(context, '/auth-page');
+                          },
+                        )
                 ],
               )
             ],
@@ -158,8 +172,25 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void checkingIfUserHasLoggedIn() async {
+    final token = await SecureStorageHelper.getToken();
+    if (token != null && token.isNotEmpty) {
+      setState(() {
+        present = true;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    checkingIfUserHasLoggedIn();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // final userPresense = Provider.of<CheckingUserPresence>(context);
+    // final present = userPresense.isUserPresentFuctionChecking;
     return Scaffold(
       body: _pages[_selectedIndex],
       bottomNavigationBar: CurvedNavigationBar(
@@ -193,7 +224,7 @@ class _HomePageState extends State<HomePage> {
         ],
         onTap: (value) {
           if (value == 4) {
-            showSettingDialog(context);
+            showSettingDialog(context, present!);
           } else {
             setState(() {
               _selectedIndex = value;
