@@ -8,6 +8,7 @@ import 'package:kuku_app/pages/knowledge_post.dart';
 import 'package:kuku_app/pages/profile_page.dart';
 import 'package:kuku_app/pages/sample_page.dart';
 import 'package:kuku_app/pages/splash_page.dart';
+import 'package:kuku_app/pages/the_room_page.dart';
 import 'package:kuku_app/widgets/app_bar.dart';
 
 class RouteGenerator {
@@ -27,6 +28,9 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const SamplePage());
       case '/knowledge-post-page':
         return MaterialPageRoute(builder: (_) => const KnowledgePostPage());
+      case '/the_room':
+        final roomId = settings.arguments as int;
+        return MaterialPageRoute(builder: (_) => TheRoomPage(roomId: roomId));
       case '/generalPostDetailsView':
         final post = settings.arguments as dynamic;
         return MaterialPageRoute(

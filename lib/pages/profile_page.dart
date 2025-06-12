@@ -88,7 +88,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             }
                           """,
                         ),
-                        fetchPolicy: FetchPolicy.cacheAndNetwork);
+                        fetchPolicy: FetchPolicy.noCache);
 
                     final Future<QueryResult> queryResults =
                         client.query(options);
@@ -99,6 +99,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             ConnectionState.waiting) {
                           return Center(child: CircularProgressIndicator());
                         }
+
+                        // if(snapshot)
 
                         if (snapshot.hasError) {
                           return Center(

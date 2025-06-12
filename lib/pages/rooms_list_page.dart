@@ -90,47 +90,53 @@ class _RoomListPageState extends State<RoomListPage> {
                     SliverGrid(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
-                          return Card(
-                            elevation: 2,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Time taken
-                                Row(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundImage: rooms[index]['host']
-                                                  ['profilePick'] !=
-                                              null
-                                          ? NetworkImage(rooms[index]['host']
-                                              ['profilePick'])
-                                          : AssetImage(
-                                                  'assets/images/defaultPic.jpg')
-                                              as ImageProvider,
-                                    ),
-                                    SizedBox(width: 4),
-                                    Text(
-                                      rooms[index]['host']['username'],
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/the_room',
+                                  arguments: int.parse(rooms[index]['id']));
+                            },
+                            child: Card(
+                              elevation: 2,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Time taken
+                                  Row(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage: rooms[index]['host']
+                                                    ['profilePick'] !=
+                                                null
+                                            ? NetworkImage(rooms[index]['host']
+                                                ['profilePick'])
+                                            : AssetImage(
+                                                    'assets/images/defaultPic.jpg')
+                                                as ImageProvider,
+                                      ),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        rooms[index]['host']['username'],
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
 
-                                SizedBox(width: 4),
+                                  SizedBox(width: 4),
 
-                                Divider(),
+                                  Divider(),
 
-                                SizedBox(width: 4),
-                                Text(
-                                  rooms[index]['description'],
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                              ],
+                                  SizedBox(width: 4),
+                                  Text(
+                                    rooms[index]['description'],
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              ),
                             ),
                           );
                         },

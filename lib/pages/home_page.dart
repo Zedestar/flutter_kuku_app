@@ -158,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                         )
                       : BottomSheetTiles(
                           tileString: 'login',
-                          tileIcon: Icons.logout_outlined,
+                          tileIcon: Icons.login_outlined,
                           theFunction: () {
                             Navigator.pushNamed(context, '/auth-page');
                           },
