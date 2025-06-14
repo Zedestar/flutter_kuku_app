@@ -189,7 +189,16 @@ class _PredictDiseaseScreenState extends State<PredictDiseaseScreen> {
                         print("Still there is a problem");
                         print(result.exception.toString());
                       } else {
-                        Navigator.pushReplacementNamed(context, '/sample-page');
+                        final data = result.data;
+                        if (data == null) {
+                          print("There is no response");
+                          return;
+                        }
+                        final String diseaseAnalyzed =
+                            data['predictDisease']['prediction'];
+                        final String confidence =
+                            data['predictDisease']['confidenceLevel'];
+                        Navigator.pushNamed(context, '/sample-page');
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -198,15 +207,18 @@ class _PredictDiseaseScreenState extends State<PredictDiseaseScreen> {
                                 content: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text("Succeful"),
-                                    Text("Succeful")
+                                    Text(diseaseAnalyzed),
+                                    Text(confidence)
                                   ],
                                 ),
                               );
                             });
                       }
                     },
-                    child: Text("Diagnonize"),
+                    child: Text(
+                      "Diagnonize",
+                      style: TextStyle(color: kcolor),
+                    ),
                   );
                 },
               ),

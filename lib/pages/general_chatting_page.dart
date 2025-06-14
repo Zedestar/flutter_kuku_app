@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kuku_app/constants/constant.dart';
+import 'package:kuku_app/pages/chatmate_page.dart';
 import 'package:kuku_app/pages/doctors_list_page.dart';
 import 'package:kuku_app/pages/rooms_list_page.dart';
 import 'package:kuku_app/widgets/app_bar.dart';
@@ -16,7 +17,7 @@ class _GeneralChatPageState extends State<GeneralChatPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
@@ -31,7 +32,8 @@ class _GeneralChatPageState extends State<GeneralChatPage> {
                 indicatorColor: Colors.white,
                 tabs: [
                   Tab(text: 'Chatting rooms'),
-                  Tab(text: 'Doctors list'),
+                  Tab(text: 'My chats'),
+                  Tab(text: 'Vets'),
                 ],
               ),
             ),
@@ -39,6 +41,7 @@ class _GeneralChatPageState extends State<GeneralChatPage> {
           body: TabBarView(
             children: [
               RoomListPage(),
+              ChatmatesPage(),
               DoctorsListPage(),
             ],
             //

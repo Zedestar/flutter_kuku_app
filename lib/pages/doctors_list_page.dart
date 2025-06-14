@@ -107,7 +107,7 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
                                                     ['profilePick'] !=
                                                 null
                                             ? NetworkImage(
-                                                doctors[index]['username'])
+                                                doctors[index]['profilePick'])
                                             : AssetImage(
                                                     'assets/images/defaultPic.jpg')
                                                 as ImageProvider,
