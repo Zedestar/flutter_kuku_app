@@ -76,9 +76,9 @@ class _ChatmatesPageState extends State<ChatmatesPage> {
               }
 
               final data = snapshot.data!.data;
-              final doctors = data?['myChatmatesRooms'];
+              final rooms = data?['myChatmatesRooms'];
 
-              if (doctors != null && doctors is List && doctors.isNotEmpty) {
+              if (rooms != null && rooms is List && rooms.isNotEmpty) {
                 return Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: CustomScrollView(
@@ -89,89 +89,101 @@ class _ChatmatesPageState extends State<ChatmatesPage> {
                       )),
                       SliverList(
                         delegate: SliverChildBuilderDelegate(
-                          childCount: doctors.length,
+                          childCount: rooms.length,
                           (context, index) {
-                            return Card(
-                              elevation: 2,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  // crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(width: 4),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Column(
-                                          children: [
-                                            CircleAvatar(
-                                              radius: 40,
-                                              backgroundImage: doctors[index]
-                                                              ['sender']
-                                                          ['profilePick'] !=
-                                                      null
-                                                  ? NetworkImage(doctors[index]
-                                                      ['sender']['profilePick'])
-                                                  : AssetImage(
-                                                          'assets/images/defaultPic.jpg')
-                                                      as ImageProvider,
-                                            ),
-                                            SizedBox(width: 4),
-                                            Text(
-                                              doctors[index]['sender']
-                                                  ['username'],
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          ],
-                                        ),
-                                        Column(
-                                          children: [
-                                            CircleAvatar(
-                                              radius: 40,
-                                              backgroundImage: doctors[index]
-                                                              ['reciver']
-                                                          ['profilePick'] !=
-                                                      null
-                                                  ? NetworkImage(doctors[index]
-                                                          ['reciver']
-                                                      ['profilePick'])
-                                                  : AssetImage(
-                                                          'assets/images/defaultPic.jpg')
-                                                      as ImageProvider,
-                                            ),
-                                            SizedBox(width: 4),
-                                            Text(
-                                              doctors[index]['reciver']
-                                                  ['username'],
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/private-room',
+                                  arguments: int.parse(rooms[index]['id']),
+                                );
+                              },
+                              child: Card(
+                                elevation: 2,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    // crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(width: 4),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Column(
+                                            children: [
+                                              CircleAvatar(
+                                                radius: 40,
+                                                backgroundImage: rooms[index]
+                                                                ['sender']
+                                                            ['profilePick'] !=
+                                                        null
+                                                    ? NetworkImage(rooms[index]
+                                                            ['sender']
+                                                        ['profilePick'])
+                                                    : AssetImage(
+                                                            'assets/images/defaultPic.jpg')
+                                                        as ImageProvider,
+                                              ),
+                                              SizedBox(width: 4),
+                                              Text(
+                                                rooms[index]['sender']
+                                                    ['username'],
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            ],
+                                          ),
+                                          Column(
+                                            children: [
+                                              CircleAvatar(
+                                                radius: 40,
+                                                backgroundImage: rooms[index]
+                                                                ['reciver']
+                                                            ['profilePick'] !=
+                                                        null
+                                                    ? NetworkImage(rooms[index]
+                                                            ['reciver']
+                                                        ['profilePick'])
+                                                    : AssetImage(
+                                                            'assets/images/defaultPic.jpg')
+                                                        as ImageProvider,
+                                              ),
+                                              SizedBox(width: 4),
+                                              Text(
+                                                rooms[index]['reciver']
+                                                    ['username'],
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
 
-                                    // Text(
-                                    //   doctors[index]['sender']['email'],
-                                    //   style: TextStyle(
-                                    //       fontSize: 14,
-                                    //       fontWeight: FontWeight.w600),
-                                    // ),
-                                    SizedBox(width: 4),
-                                    Divider(),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                  ],
+                                      // Text(
+                                      //   rooms[index]['sender']['email'],
+                                      //   style: TextStyle(
+                                      //       fontSize: 14,
+                                      //       fontWeight: FontWeight.w600),
+                                      // ),
+                                      SizedBox(width: 4),
+                                      Divider(),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             );

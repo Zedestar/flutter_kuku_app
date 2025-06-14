@@ -5,6 +5,7 @@ import 'package:kuku_app/pages/general_post_details_view.dart';
 import 'package:kuku_app/pages/help_and_support_page.dart';
 import 'package:kuku_app/pages/home_page.dart';
 import 'package:kuku_app/pages/knowledge_post.dart';
+import 'package:kuku_app/pages/private_room_page.dart';
 import 'package:kuku_app/pages/profile_page.dart';
 import 'package:kuku_app/pages/sample_page.dart';
 import 'package:kuku_app/pages/splash_page.dart';
@@ -31,6 +32,10 @@ class RouteGenerator {
       case '/the_room':
         final roomId = settings.arguments as int;
         return MaterialPageRoute(builder: (_) => TheRoomPage(roomId: roomId));
+      case '/private-room':
+        final roomId = settings.arguments as int;
+        return MaterialPageRoute(
+            builder: (_) => PrivateRoomPage(roomId: roomId));
       case '/generalPostDetailsView':
         final post = settings.arguments as dynamic;
         return MaterialPageRoute(
