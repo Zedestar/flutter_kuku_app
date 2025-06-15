@@ -159,8 +159,7 @@ class _PrivateRoomPageState extends State<PrivateRoomPage> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     title: Text("Success"),
-                                    content: Text(
-                                        "Message was successfully created."),
+                                    content: Text(successMessage),
                                     actions: [
                                       TextButton(
                                         onPressed: () {

@@ -88,49 +88,59 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
                           delegate: SliverChildBuilderDelegate(
                             childCount: doctors.length,
                             (context, index) {
-                              return Card(
-                                elevation: 2,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    // crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(width: 4),
-                                      CircleAvatar(
-                                        radius: 40,
-                                        backgroundImage: doctors[index]
-                                                    ['profilePick'] !=
-                                                null
-                                            ? NetworkImage(
-                                                doctors[index]['profilePick'])
-                                            : AssetImage(
-                                                    'assets/images/defaultPic.jpg')
-                                                as ImageProvider,
-                                      ),
-                                      SizedBox(width: 4),
-                                      Text(
-                                        doctors[index]['username'],
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      Text(
-                                        doctors[index]['email'],
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      SizedBox(width: 4),
-                                      Divider(),
-                                      SizedBox(
-                                        width: 4,
-                                      ),
-                                    ],
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, '/vetInfo-page', arguments: {
+                                    "vetId": int.parse(doctors[index]['id']),
+                                    "vetName": doctors[index]['username']
+                                  });
+                                },
+                                child: Card(
+                                  elevation: 2,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      // crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(width: 4),
+                                        CircleAvatar(
+                                          radius: 40,
+                                          backgroundImage: doctors[index]
+                                                      ['profilePick'] !=
+                                                  null
+                                              ? NetworkImage(
+                                                  doctors[index]['profilePick'])
+                                              : AssetImage(
+                                                      'assets/images/defaultPic.jpg')
+                                                  as ImageProvider,
+                                        ),
+                                        SizedBox(width: 4),
+                                        Text(
+                                          doctors[index]['username'],
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        Text(
+                                          doctors[index]['email'],
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        SizedBox(width: 4),
+                                        Divider(),
+                                        SizedBox(
+                                          width: 4,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );
