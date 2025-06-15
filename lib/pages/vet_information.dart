@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:kuku_app/constants/constant.dart';
 import 'package:kuku_app/widgets/app_bar.dart';
 import 'package:kuku_app/widgets/profile_list_items.dart';
 import 'package:kuku_app/widgets/profile_stats_box.dart';
@@ -22,18 +23,18 @@ class VetInfoPage extends StatelessWidget {
                 final QueryOptions options = QueryOptions(
                     document: gql(
                       """
-                                     query(\$vetId:Int){
-  profile(vetId:\$vetId){
-    user{
-      username
-      profilePick
-      email
-    }
-    
-    location
-    facebook
-  }
-}
+                        query(\$vetId:Int){
+                          profile(vetId:\$vetId){
+                            user{
+                              username
+                              profilePick
+                              email
+                            }
+                            
+                            location
+                            facebook
+                          }
+                        }
                           """,
                     ),
                     variables: {"vetId": vetId},
@@ -72,22 +73,6 @@ class VetInfoPage extends StatelessWidget {
                         ),
                       );
                     }
-
-                    //   showDialog(
-                    //     context: context,
-                    //     builder: (context) => AlertDialog(
-                    //       title: Text("Profile Error"),
-                    //       content: Text(theException),
-                    //       actions: [
-                    //         TextButton(
-                    //           child: Text("OK"),
-                    //           onPressed: () => Navigator.of(context).pop(),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   );
-                    // }
-
                     if (!snapshot.hasData || snapshot.data == null) {
                       return Text("you dont have profile yet");
                     }
@@ -102,6 +87,57 @@ class VetInfoPage extends StatelessWidget {
                                 'https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg',
                           ),
                         ),
+                        const SizedBox(height: 10),
+                        GraphQLConsumer(builder: (GraphQLClient client) {
+                          return OutlinedButton(
+                            onPressed: () async {
+                              MutationOptions options = MutationOptions(
+                                document: gql(
+                                  r"""
+                                    mutation($vetId:Int!){
+                                      checkingDirectRoom(vetId:$vetId){
+                                        directRoomId
+                                    }
+                                  }
+                                  """,
+                                ),
+                                variables: {
+                                  "vetId": vetId,
+                                },
+                              );
+                              final result = await client.mutate(options);
+                              if (result.hasException) {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text("Error"),
+                                      content: Text(
+                                          "Server is temporary unavailable"),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text("Ok"))
+                                      ],
+                                    );
+                                  },
+                                );
+                              } else {
+                                final roomId =
+                                    result.data!['checkingDirectRoom']
+                                        ['directRoomId'];
+                                Navigator.pushNamed(context, '/private-room',
+                                    arguments: roomId);
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                                foregroundColor: kcolor,
+                                side: BorderSide(color: kcolor)),
+                            child: Text("Message"),
+                          );
+                        }),
                         const SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,

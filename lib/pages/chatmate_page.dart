@@ -34,6 +34,7 @@ class _ChatmatesPageState extends State<ChatmatesPage> {
                 """,
             ),
             // pollInterval: Duration(seconds: 10),
+            fetchPolicy: FetchPolicy.networkOnly,
             fetchResults: true,
           );
           final ObservableQuery observableQuery = client.watchQuery(options);

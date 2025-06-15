@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:kuku_app/constants/constant.dart';
 
 class RoomListPage extends StatefulWidget {
   const RoomListPage({super.key});
