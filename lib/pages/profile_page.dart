@@ -8,6 +8,8 @@ import 'package:kuku_app/widgets/form_input_widget.dart';
 import 'dart:io';
 import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
+import 'package:kuku_app/widgets/profile_list_items.dart';
+import 'package:kuku_app/widgets/profile_stats_box.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -112,6 +114,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         }
 
                         final data = snapshot.data!.data?['profile'];
+                        // THIS IS SPECIAL BROCK THAT IS IF USER HAS NO PRFILE THE THIS WILL DISPLAY
                         if (data == null) {
                           return Center(
                             child: Column(
@@ -343,12 +346,13 @@ class _ProfilePageState extends State<ProfilePage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: const [
-                                _StatBox(
+                                ProfileStatsBox(
                                     title: "24", subtitle: "Guides Created"),
-                                _StatBox(
+                                ProfileStatsBox(
                                     title: "343 KM",
                                     subtitle: "Distance Travelled"),
-                                _StatBox(title: "8", subtitle: "Trips Planned"),
+                                ProfileStatsBox(
+                                    title: "8", subtitle: "Trips Planned"),
                               ],
                             ),
 
@@ -356,16 +360,16 @@ class _ProfilePageState extends State<ProfilePage> {
 
                             // Settings List
                             const Divider(),
-                            _ProfileItem(
+                            ProfileListItems(
                                 icon: Icons.edit,
                                 text: "Edit profile",
                                 theActionOnTap: () {}),
-                            _ProfileItem(
+                            ProfileListItems(
                                 icon: Icons.credit_card,
                                 text: "Billing",
                                 theActionOnTap: () {}),
 
-                            _ProfileItem(
+                            ProfileListItems(
                               icon: Icons.home_outlined,
                               text: "Home",
                               theActionOnTap: () {
@@ -395,44 +399,5 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
     );
-  }
-}
-
-class _StatBox extends StatelessWidget {
-  final String title;
-  final String subtitle;
-
-  const _StatBox({required this.title, required this.subtitle});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(title,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 5),
-        Text(subtitle,
-            style: const TextStyle(color: Colors.grey, fontSize: 13)),
-      ],
-    );
-  }
-}
-
-class _ProfileItem extends StatelessWidget {
-  const _ProfileItem(
-      {required this.icon, required this.text, required this.theActionOnTap});
-  final IconData icon;
-  final String text;
-  final VoidCallback theActionOnTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-        leading: Icon(
-          icon,
-        ),
-        title: Text(text),
-        trailing: const Icon(Icons.chevron_right),
-        onTap: theActionOnTap);
   }
 }
