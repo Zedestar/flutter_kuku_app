@@ -29,6 +29,7 @@ class VetInfoPage extends StatelessWidget {
                               username
                               profilePick
                               email
+                              role
                             }
                             
                             location
@@ -150,7 +151,7 @@ class VetInfoPage extends StatelessWidget {
                             ),
                             SizedBox(width: 6),
                             Chip(
-                              label: Text("Farmer",
+                              label: Text(data['user']['role'],
                                   style: TextStyle(color: Colors.blue)),
                               avatar: Icon(Icons.verified,
                                   color: Colors.blue, size: 18),

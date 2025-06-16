@@ -5,6 +5,7 @@ import 'package:kuku_app/pages/general_post_details_view.dart';
 import 'package:kuku_app/pages/help_and_support_page.dart';
 import 'package:kuku_app/pages/home_page.dart';
 import 'package:kuku_app/pages/knowledge_post.dart';
+import 'package:kuku_app/pages/onboarding_page.dart';
 import 'package:kuku_app/pages/private_room_page.dart';
 import 'package:kuku_app/pages/profile_page.dart';
 import 'package:kuku_app/pages/sample_page.dart';
@@ -18,6 +19,8 @@ class RouteGenerator {
     switch (settings.name) {
       case '/splash-screen':
         return MaterialPageRoute(builder: (_) => const SplashScreen());
+      case '/onboarding':
+        return MaterialPageRoute(builder: (_) => const OnboardingPage());
       case '/home-page':
         return MaterialPageRoute(builder: (_) => const HomePage());
       case '/profile-page':

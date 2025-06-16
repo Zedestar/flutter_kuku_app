@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+// import 'package:shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -12,12 +14,21 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(
-      const Duration(seconds: 3),
-      () {
-        Navigator.pushReplacementNamed(context, '/home-page');
-      },
-    );
+    _checkOnboarding();
+  }
+
+  Future<void> _checkOnboarding() async {
+    await Future.delayed(const Duration(seconds: 3));
+    if (!mounted) return;
+
+    final prefs = await SharedPreferences.getInstance();
+    final onboardingCompleted = prefs.getBool('onboarding_completed') ?? false;
+
+    if (!onboardingCompleted) {
+      Navigator.pushReplacementNamed(context, '/onboarding');
+    } else {
+      Navigator.pushReplacementNamed(context, '/home-page');
+    }
   }
 
   @override

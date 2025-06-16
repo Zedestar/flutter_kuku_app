@@ -80,6 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               profile{
                                 user{
                                   username
+                                  role
                                 }
                                 bio
                                 profileUrl
@@ -328,7 +329,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 SizedBox(width: 6),
                                 Chip(
-                                  label: Text("Farmer",
+                                  label: Text(data['user']['role'],
                                       style: TextStyle(color: Colors.blue)),
                                   avatar: Icon(Icons.verified,
                                       color: Colors.blue, size: 18),
