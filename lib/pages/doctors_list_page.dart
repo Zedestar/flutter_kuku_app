@@ -31,6 +31,7 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
                 """,
               ),
               // pollInterval: Duration(seconds: 10),
+              fetchPolicy: FetchPolicy.networkOnly,
               fetchResults: true,
             );
             final ObservableQuery observableQuery = client.watchQuery(options);

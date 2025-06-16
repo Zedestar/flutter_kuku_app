@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:kuku_app/constants/constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -110,6 +109,19 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       ),
                     ),
                   ),
+                  if (_currentPage < _contents.length - 1) ...[
+                    ElevatedButton(
+                      onPressed: _completeOnboarding,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: kcolor,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 30,
+                          vertical: 15,
+                        ),
+                      ),
+                      child: Text("Skip"),
+                    )
+                  ],
                   ElevatedButton(
                     onPressed: _currentPage == _contents.length - 1
                         ? _completeOnboarding
