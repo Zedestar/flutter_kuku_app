@@ -111,15 +111,14 @@ class _HomePageState extends State<HomePage> {
                       );
                     },
                   ),
-
-                  // ListTile(
-                  //   leading: Icon(Icons.notifications_outlined),
-                  //   title: Text('notifications'.tr()),
-                  //   onTap: () {
-                  //     Navigator.pushReplacementNamed(
-                  //         context, '/notifications-page');
-                  //   },
-                  // ),
+                  ListTile(
+                    leading: Icon(Icons.heart_broken),
+                    title: Text('notifications'.tr()),
+                    onTap: () {
+                      Navigator.pushReplacementNamed(
+                          context, '/vet-registration-page');
+                    },
+                  ),
                   BottomSheetTiles(
                     tileString: 'help_and_supprt'.tr(),
                     tileIcon: Icons.help_outline,
@@ -128,7 +127,6 @@ class _HomePageState extends State<HomePage> {
                           context, '/help-and-support-page');
                     },
                   ),
-
                   present
                       ? BottomSheetTiles(
                           tileString: 'logout'.tr(),

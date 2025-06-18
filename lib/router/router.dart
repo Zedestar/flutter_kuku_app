@@ -8,6 +8,7 @@ import 'package:kuku_app/pages/knowledge_post.dart';
 import 'package:kuku_app/pages/onboarding_page.dart';
 import 'package:kuku_app/pages/private_room_page.dart';
 import 'package:kuku_app/pages/profile_page.dart';
+import 'package:kuku_app/pages/registering_vet_page.dart';
 import 'package:kuku_app/pages/sample_page.dart';
 import 'package:kuku_app/pages/splash_page.dart';
 import 'package:kuku_app/pages/the_room_page.dart';
@@ -36,6 +37,8 @@ class RouteGenerator {
       case '/the_room':
         final roomId = settings.arguments as int;
         return MaterialPageRoute(builder: (_) => TheRoomPage(roomId: roomId));
+      case '/vet-registration-page':
+        return MaterialPageRoute(builder: (_) => const VetRegistrationPage());
       case '/private-room':
         final roomId = settings.arguments as int;
         return MaterialPageRoute(
