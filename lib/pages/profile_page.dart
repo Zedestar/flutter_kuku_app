@@ -37,6 +37,13 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  // String? validator(String? value) {
+  //   if (value == null || value.trim().isEmpty) {
+  //     return "This string can't be empty";
+  //   }
+  //   return
+  // }
+
   void checkingIfUserHasLoggedIn() async {
     final token = await SecureStorageHelper.getToken();
     setState(() {

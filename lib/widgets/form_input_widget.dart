@@ -15,6 +15,7 @@ class FormInputWidget extends StatelessWidget {
   final String inputHint;
   final String inputLabel;
   final TextInputType textType;
+  // final VoidCallback validatorFunction;
 
   @override
   Widget build(BuildContext context) {
