@@ -166,18 +166,18 @@ class VetInfoPage extends StatelessWidget {
                           style: TextStyle(color: Colors.grey),
                         ),
                         const SizedBox(height: 30),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: const [
-                            ProfileStatsBox(
-                                title: "24", subtitle: "Guides Created"),
-                            ProfileStatsBox(
-                                title: "343 KM",
-                                subtitle: "Distance Travelled"),
-                            ProfileStatsBox(
-                                title: "8", subtitle: "Trips Planned"),
-                          ],
-                        ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        //   children: const [
+                        //     ProfileStatsBox(
+                        //         title: "24", subtitle: "Guides Created"),
+                        //     ProfileStatsBox(
+                        //         title: "343 KM",
+                        //         subtitle: "Distance Travelled"),
+                        //     ProfileStatsBox(
+                        //         title: "8", subtitle: "Trips Planned"),
+                        //   ],
+                        // ),
 
                         const SizedBox(height: 30),
 

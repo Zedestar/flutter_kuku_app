@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kuku_app/constants/constant.dart';
 import 'package:kuku_app/pages/business_past_page.dart';
+import 'package:kuku_app/pages/bussiness_charts.dart';
 import 'package:kuku_app/pages/knowledge_post.dart';
 
 class GeneralPostPage extends StatefulWidget {
@@ -15,7 +16,7 @@ class _GeneralPostPageState extends State<GeneralPostPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
@@ -31,6 +32,7 @@ class _GeneralPostPageState extends State<GeneralPostPage> {
                 tabs: [
                   Tab(text: 'knowledge_post'),
                   Tab(text: 'business_post'),
+                  Tab(text: 'business_chart'),
                 ],
               ),
             ),
@@ -39,6 +41,7 @@ class _GeneralPostPageState extends State<GeneralPostPage> {
             children: [
               KnowledgePostPage(),
               BussinessPage(),
+              BussinessChats(),
             ],
             //
           ),

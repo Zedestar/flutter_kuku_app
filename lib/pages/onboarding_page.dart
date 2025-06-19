@@ -17,17 +17,22 @@ class _OnboardingPageState extends State<OnboardingPage> {
     OnboardingContent(
       title: 'Welcome to Kuku App',
       description: 'Your one-stop solution for poultry farming',
-      image: 'assets/images/defaultPic.jpg',
+      image: 'assets/images/quickSolution.png',
     ),
     OnboardingContent(
       title: 'Expert Advice',
       description: 'Get professional guidance from experienced veterinarians',
-      image: 'assets/images/defaultPic.jpg',
+      image: 'assets/images/ExpertAdvice.png',
     ),
     OnboardingContent(
       title: 'Community Support',
       description: 'Connect with other farmers and share experiences',
-      image: 'assets/images/defaultPic.jpg',
+      image: 'assets/images/CummunitySupport.png',
+    ),
+    OnboardingContent(
+      title: 'Detect Disease',
+      description: 'Detect chicken disease using their drops ',
+      image: 'assets/images/detection.png',
     ),
   ];
 
