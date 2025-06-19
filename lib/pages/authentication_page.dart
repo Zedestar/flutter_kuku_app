@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:kuku_app/constants/constant.dart';
 import 'package:kuku_app/token/token_helper.dart';
 import 'package:kuku_app/widgets/app_bar.dart';
+import 'package:kuku_app/widgets/form_input_vet.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -20,6 +22,9 @@ class _AuthPageState extends State<AuthPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _secondName = TextEditingController();
+  final _phoneNumber = TextEditingController();
+  XFile? vetCertificate;
   final _pageController = PageController();
   int _currentPage = 0;
 
@@ -30,50 +35,10 @@ class _AuthPageState extends State<AuthPage> {
     _confirmPasswordController.dispose();
     _usernameController.dispose();
     _pageController.dispose();
+    _phoneNumber.dispose();
+    _secondName.dispose();
     super.dispose();
   }
-
-  final List<Widget> _content = [
-    Padding(
-      padding: const EdgeInsets.all(30),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextFormField(),
-          SizedBox(
-            height: 30,
-          ),
-          TextFormField(),
-        ],
-      ),
-    ),
-    Padding(
-      padding: const EdgeInsets.all(30),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextFormField(),
-          SizedBox(
-            height: 30,
-          ),
-          TextFormField(),
-        ],
-      ),
-    ),
-    Padding(
-      padding: const EdgeInsets.all(30),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextFormField(),
-          SizedBox(
-            height: 30,
-          ),
-          TextFormField(),
-        ],
-      ),
-    ),
-  ];
 
   void _toggleAuthMode() {
     setState(() {
@@ -85,6 +50,12 @@ class _AuthPageState extends State<AuthPage> {
     setState(() {
       _vetMode = !_vetMode;
     });
+    _emailController.clear();
+    _usernameController.clear();
+    _passwordController.clear();
+    _confirmPasswordController.clear();
+    _secondName.clear();
+    _phoneNumber.clear();
   }
 
   void _onPageChange(int pageNumber) {
@@ -200,11 +171,19 @@ class _AuthPageState extends State<AuthPage> {
 
   String? _validateUsername(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter your username';
+      return 'Please enter your first name';
     }
     if (value.length < 3) {
       return 'Username must be at least 3 characters';
     }
+    return null;
+  }
+
+  String? _secondnameValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Second name can't be empty";
+    }
+
     return null;
   }
 
@@ -228,8 +207,123 @@ class _AuthPageState extends State<AuthPage> {
     return null;
   }
 
+  String? _phoneNumberValidation(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Phone number can\'t be null';
+    }
+    if (!value.startsWith("+255")) {
+      return "Start with +255";
+    }
+    if (value.length != 13) {
+      return "Phonenumber should have 13 characters";
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final List<Widget> content = [
+      Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            InputFieldVetText(
+              inputLabel: "firstname",
+              inputHint: "Enter your firstname",
+              textType: TextInputType.text,
+              obscureText: false,
+              maxmumlength: 50,
+              theController: _usernameController,
+              validation: _validateUsername,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            InputFieldVetText(
+              inputLabel: "secondname",
+              inputHint: "Enter your second name",
+              textType: TextInputType.text,
+              obscureText: false,
+              maxmumlength: 50,
+              theController: _secondName,
+              validation: _secondnameValidator,
+            ),
+          ],
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            InputFieldVetText(
+              inputLabel: "phone number",
+              inputHint: "Enter your phone number",
+              textType: TextInputType.number,
+              obscureText: false,
+              maxmumlength: 13,
+              theController: _phoneNumber,
+              validation: _phoneNumberValidation,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            InputFieldVetText(
+              inputLabel: "email",
+              inputHint: "Enter your email",
+              textType: TextInputType.emailAddress,
+              obscureText: false,
+              maxmumlength: 50,
+              theController: _emailController,
+              validation: _validateEmail,
+            ),
+          ],
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Upload your certificate"),
+            SizedBox(
+              height: 5,
+            ),
+            OutlinedButton(onPressed: null, child: Text("Take from gallery"))
+          ],
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            InputFieldVetText(
+              inputLabel: "password",
+              inputHint: "Enter your password",
+              textType: TextInputType.visiblePassword,
+              obscureText: true,
+              maxmumlength: 100,
+              theController: _passwordController,
+              validation: _validatePassword,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            InputFieldVetText(
+              inputLabel: "confirm password",
+              inputHint: "Confirm your password",
+              textType: TextInputType.visiblePassword,
+              obscureText: true,
+              maxmumlength: 100,
+              theController: _confirmPasswordController,
+              validation: _validateConfirmPassword,
+            ),
+          ],
+        ),
+      ),
+    ];
     return Scaffold(
       appBar: theAppBar(context, 'auth_page'),
       body: _vetMode != true
@@ -344,47 +438,95 @@ class _AuthPageState extends State<AuthPage> {
             )
           : Center(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20.0),
                 child: Card(
-                  elevation: 10.0,
+                  elevation: 4,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.all(4.0),
                     child: Form(
                       key: _formKey,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          Text(
+                            "Sing up as a Vet",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                              color: kcolor,
+                            ),
+                          ),
                           SizedBox(
-                            height: 300,
+                            height: 250,
                             child: PageView.builder(
                               controller: _pageController,
                               onPageChanged: _onPageChange,
-                              itemCount: _content.length,
+                              itemCount: content.length,
                               itemBuilder: (context, index) {
-                                return _content[index];
+                                return content[index];
                               },
                             ),
                           ),
                           Row(
-                            children: List.generate(
-                              _content.length,
-                              (index) => Container(
-                                margin: const EdgeInsets.only(right: 5),
-                                height: 8,
-                                width: _currentPage == index ? 20 : 8,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: _currentPage == index
-                                      ? kcolor
-                                      : Colors.grey,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ElevatedButton(
+                                onPressed: _currentPage > 0
+                                    ? () {
+                                        setState(() {
+                                          _currentPage = _currentPage - 1;
+                                          _pageController.previousPage(
+                                            duration: const Duration(
+                                                milliseconds: 300),
+                                            curve: Curves.easeIn,
+                                          );
+                                        });
+                                      }
+                                    : null,
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: kcolor),
+                                child: Text("Back"),
+                              ),
+                              ...List.generate(
+                                content.length,
+                                (index) => Container(
+                                  margin: const EdgeInsets.only(right: 5),
+                                  height: 8,
+                                  width: _currentPage == index ? 20 : 8,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: _currentPage == index
+                                        ? kcolor
+                                        : Colors.grey,
+                                  ),
                                 ),
                               ),
-                            ),
+                              ElevatedButton(
+                                onPressed: _currentPage < content.length - 1
+                                    ? () {
+                                        setState(() {
+                                          _pageController.nextPage(
+                                            duration: const Duration(
+                                                milliseconds: 300),
+                                            curve: Curves.easeIn,
+                                          );
+                                          _currentPage = _currentPage + 1;
+                                        });
+                                      }
+                                    : null,
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: kcolor),
+                                child: Text("Next"),
+                              ),
+                            ],
                           ),
+                          TextButton(
+                              onPressed: _toggleVetMode,
+                              child: Text("Signup as the farmer"))
                         ],
                       ),
                     ),
