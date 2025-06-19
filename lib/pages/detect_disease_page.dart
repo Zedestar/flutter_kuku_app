@@ -89,9 +89,7 @@ class _PredictDiseaseScreenState extends State<PredictDiseaseScreen> {
                 builder: (GraphQLClient client) {
                   return ElevatedButton(
                     onPressed: () async {
-                      // Reading the byte from the file
                       final byte = await _image!.readAsBytes();
-                      // Creating multipart from byte
                       final multipartFile = http.MultipartFile.fromBytes(
                         "sampleImage",
                         byte,

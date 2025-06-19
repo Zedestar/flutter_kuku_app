@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kuku_app/constants/constant.dart';
 import 'package:kuku_app/token/token_helper.dart';
 import 'package:kuku_app/widgets/app_bar.dart';
 import 'package:kuku_app/widgets/form_input_vet.dart';
+import 'package:http/http.dart' as http;
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -27,9 +29,11 @@ class _AuthPageState extends State<AuthPage> {
   final _secondName = TextEditingController();
   final _phoneNumber = TextEditingController();
   File? vetCertificate;
+  File? vetPic;
   final _pageController = PageController();
   int _currentPage = 0;
   bool certifcateValidated = false;
+  bool validatedVetPic = false;
 
   @override
   void dispose() {
@@ -73,6 +77,16 @@ class _AuthPageState extends State<AuthPage> {
     if (pickedFile != null) {
       setState(() {
         vetCertificate = File(pickedFile.path);
+      });
+    }
+  }
+
+  Future<void> pickVetImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        vetPic = File(pickedFile.path);
       });
     }
   }
@@ -291,6 +305,41 @@ class _AuthPageState extends State<AuthPage> {
               theController: _emailController,
               validation: _validateEmail,
             ),
+          ],
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Upload your picture"),
+            SizedBox(
+              height: 5,
+            ),
+            OutlinedButton(
+              onPressed: pickVetImage,
+              style: OutlinedButton.styleFrom(
+                side: BorderSide(
+                  color: kcolor,
+                ),
+              ),
+              child: Text("Take from gallery"),
+            ),
+            if (validatedVetPic) ...[
+              Text(
+                "Upload your profile picture to continue",
+                style: TextStyle(color: Colors.red),
+              )
+            ],
+            if (vetPic != null) ...[
+              Image.file(
+                vetPic!,
+                height: 100,
+                width: 100,
+                fit: BoxFit.cover,
+              ),
+            ]
           ],
         ),
       ),
@@ -540,54 +589,160 @@ class _AuthPageState extends State<AuthPage> {
                                   ),
                                 ),
                               ),
-                              ElevatedButton(
-                                onPressed: _currentPage < content.length - 1
-                                    ? () {
-                                        setState(() {
-                                          if (_currentPage == 0) {
-                                            if (!_formKey.currentState!
-                                                .validate()) {
-                                              return;
+                              GraphQLConsumer(builder: (GraphQLClient client) {
+                                return ElevatedButton(
+                                  onPressed: _currentPage < content.length - 1
+                                      ? () {
+                                          setState(() {
+                                            if (_currentPage == 0) {
+                                              if (!_formKey.currentState!
+                                                  .validate()) {
+                                                return;
+                                              }
+                                            } else if (_currentPage == 1) {
+                                              if (!_formKey.currentState!
+                                                  .validate()) {
+                                                return;
+                                              }
+                                            } else if (_currentPage == 2) {
+                                              if (vetPic == null) {
+                                                setState(() {
+                                                  validatedVetPic = true;
+                                                });
+                                                return;
+                                              } else {
+                                                setState(() {
+                                                  validatedVetPic = false;
+                                                });
+                                              }
+                                            } else if (_currentPage == 3) {
+                                              if (vetCertificate == null) {
+                                                setState(() {
+                                                  certifcateValidated = true;
+                                                });
+                                                return;
+                                              } else {
+                                                setState(() {
+                                                  certifcateValidated = false;
+                                                });
+                                              }
                                             }
-                                          } else if (_currentPage == 1) {
-                                            if (!_formKey.currentState!
-                                                .validate()) {
-                                              return;
-                                            }
-                                          } else if (_currentPage == 2) {
-                                            if (vetCertificate == null) {
-                                              setState(() {
-                                                certifcateValidated = true;
-                                              });
-                                              return;
-                                            } else {
-                                              setState(() {
-                                                certifcateValidated = false;
-                                              });
-                                            }
-                                          }
-                                          _pageController.nextPage(
-                                            duration: const Duration(
-                                                milliseconds: 300),
-                                            curve: Curves.easeIn,
-                                          );
-                                          _currentPage = _currentPage + 1;
-                                        });
-                                      }
-                                    : () {
-                                        if (!_formKey.currentState!
-                                            .validate()) {
-                                          return;
+                                            _pageController.nextPage(
+                                              duration: const Duration(
+                                                  milliseconds: 300),
+                                              curve: Curves.easeIn,
+                                            );
+                                            _currentPage = _currentPage + 1;
+                                          });
                                         }
-                                      },
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: kcolor),
-                                child: Text(
-                                  _currentPage < content.length - 1
-                                      ? "Next"
-                                      : "Signup",
-                                ),
-                              ),
+                                      : () async {
+                                          if (!_formKey.currentState!
+                                              .validate()) {
+                                            return;
+                                          }
+
+                                          final theProfilePic =
+                                              await vetPic!.readAsBytes();
+                                          final vetPicMultipartFile =
+                                              http.MultipartFile.fromBytes(
+                                            "vetPic",
+                                            theProfilePic,
+                                            filename:
+                                                vetPic!.path.split('/').last,
+                                            contentType:
+                                                MediaType('image', 'jpeg'),
+                                          );
+
+                                          final theVetCertificate =
+                                              await vetCertificate!
+                                                  .readAsBytes();
+                                          final vetCertificateMultipartFile =
+                                              http.MultipartFile.fromBytes(
+                                            "vetCertificate",
+                                            theVetCertificate,
+                                            filename:
+                                                vetPic!.path.split('/').last,
+                                            contentType:
+                                                MediaType('image', 'jpeg'),
+                                          );
+
+                                          final MutationOptions options =
+                                              MutationOptions(
+                                            document: gql(r"""
+                                                mutation CreateVet(
+                                                  $firstName: String!,
+                                                  $secondName: String!,
+                                                  $phoneNumber: String!,
+                                                  $email: String!,
+                                                  $password: String!,
+                                                  $vetCertificate: Upload!,
+                                                  $vetPic: Upload!
+                                                ) {
+                                                  createVet(
+                                                    firstName: $firstName,
+                                                    secondName: $secondName,
+                                                    phoneNumber: $phoneNumber,
+                                                    email: $email,
+                                                    password: $password,
+                                                    vetCertificate: $vetCertificate,
+                                                    vetPic: $vetPic
+                                                  ) {
+                                                    SuccessMessage
+                                                  }
+                                                }
+                                              """),
+                                            variables: {
+                                              "firstName":
+                                                  _usernameController.text,
+                                              "secondName": _secondName.text,
+                                              "phoneNumber": _phoneNumber.text,
+                                              "email": _emailController.text,
+                                              "password":
+                                                  _passwordController.text,
+                                              "vetCertificate":
+                                                  vetCertificateMultipartFile,
+                                              "vetPic": vetPicMultipartFile
+                                            },
+                                          );
+                                          final result =
+                                              await client.mutate(options);
+                                          final successMessage =
+                                              result.data?['createVet']
+                                                  ?['SuccessMessage'];
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              // Defer the navigation after this frame
+                                              Future.microtask(() {
+                                                Navigator.pushReplacementNamed(
+                                                    context, '/auth-page');
+                                              });
+
+                                              return AlertDialog(
+                                                title: Text("Successful"),
+                                                content: Text(successMessage ??
+                                                    "Account created."),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text("Ok"),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: kcolor),
+                                  child: Text(
+                                    _currentPage < content.length - 1
+                                        ? "Next"
+                                        : "Signup",
+                                  ),
+                                );
+                              }),
                             ],
                           ),
                           TextButton(

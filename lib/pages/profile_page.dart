@@ -347,7 +347,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             Text(
                               // "the Bio",
-                              data['bio'],
+                              data['bio'] ?? "Hey there am the pault farmer",
                               style: TextStyle(color: Colors.grey),
                             ),
                             const SizedBox(height: 30),
