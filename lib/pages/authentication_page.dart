@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -24,9 +26,10 @@ class _AuthPageState extends State<AuthPage> {
   final _confirmPasswordController = TextEditingController();
   final _secondName = TextEditingController();
   final _phoneNumber = TextEditingController();
-  XFile? vetCertificate;
+  File? vetCertificate;
   final _pageController = PageController();
   int _currentPage = 0;
+  bool certifcateValidated = false;
 
   @override
   void dispose() {
@@ -62,6 +65,16 @@ class _AuthPageState extends State<AuthPage> {
     setState(() {
       _currentPage = pageNumber;
     });
+  }
+
+  Future<void> pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        vetCertificate = File(pickedFile.path);
+      });
+    }
   }
 
   void _submitForm() {
@@ -260,7 +273,7 @@ class _AuthPageState extends State<AuthPage> {
             InputFieldVetText(
               inputLabel: "phone number",
               inputHint: "Enter your phone number",
-              textType: TextInputType.number,
+              textType: TextInputType.phone,
               obscureText: false,
               maxmumlength: 13,
               theController: _phoneNumber,
@@ -290,7 +303,29 @@ class _AuthPageState extends State<AuthPage> {
             SizedBox(
               height: 5,
             ),
-            OutlinedButton(onPressed: null, child: Text("Take from gallery"))
+            OutlinedButton(
+              onPressed: pickImage,
+              style: OutlinedButton.styleFrom(
+                side: BorderSide(
+                  color: kcolor,
+                ),
+              ),
+              child: Text("Take from gallery"),
+            ),
+            if (certifcateValidated) ...[
+              Text(
+                "Upload the certificate to continue",
+                style: TextStyle(color: Colors.red),
+              )
+            ],
+            if (vetCertificate != null) ...[
+              Image.file(
+                vetCertificate!,
+                height: 100,
+                width: 100,
+                fit: BoxFit.cover,
+              ),
+            ]
           ],
         ),
       ),
@@ -509,6 +544,28 @@ class _AuthPageState extends State<AuthPage> {
                                 onPressed: _currentPage < content.length - 1
                                     ? () {
                                         setState(() {
+                                          if (_currentPage == 0) {
+                                            if (!_formKey.currentState!
+                                                .validate()) {
+                                              return;
+                                            }
+                                          } else if (_currentPage == 1) {
+                                            if (!_formKey.currentState!
+                                                .validate()) {
+                                              return;
+                                            }
+                                          } else if (_currentPage == 2) {
+                                            if (vetCertificate == null) {
+                                              setState(() {
+                                                certifcateValidated = true;
+                                              });
+                                              return;
+                                            } else {
+                                              setState(() {
+                                                certifcateValidated = false;
+                                              });
+                                            }
+                                          }
                                           _pageController.nextPage(
                                             duration: const Duration(
                                                 milliseconds: 300),
@@ -517,10 +574,19 @@ class _AuthPageState extends State<AuthPage> {
                                           _currentPage = _currentPage + 1;
                                         });
                                       }
-                                    : null,
+                                    : () {
+                                        if (!_formKey.currentState!
+                                            .validate()) {
+                                          return;
+                                        }
+                                      },
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: kcolor),
-                                child: Text("Next"),
+                                child: Text(
+                                  _currentPage < content.length - 1
+                                      ? "Next"
+                                      : "Signup",
+                                ),
                               ),
                             ],
                           ),
