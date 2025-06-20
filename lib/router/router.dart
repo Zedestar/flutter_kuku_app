@@ -6,6 +6,7 @@ import 'package:kuku_app/pages/help_and_support_page.dart';
 import 'package:kuku_app/pages/home_page.dart';
 import 'package:kuku_app/pages/knowledge_post.dart';
 import 'package:kuku_app/pages/onboarding_page.dart';
+import 'package:kuku_app/pages/private_business_chart_room.dart';
 import 'package:kuku_app/pages/private_room_page.dart';
 import 'package:kuku_app/pages/profile_page.dart';
 import 'package:kuku_app/pages/registering_vet_page.dart';
@@ -43,6 +44,10 @@ class RouteGenerator {
         final roomId = settings.arguments as int;
         return MaterialPageRoute(
             builder: (_) => PrivateRoomPage(roomId: roomId));
+      case '/private-bussines-room':
+        final roomId = settings.arguments as int;
+        return MaterialPageRoute(
+            builder: (_) => PrivatedBusinessChatRoom(roomId: roomId));
       case '/vetInfo-page':
         final args = settings.arguments as Map<String, dynamic>;
         final vetId = args['vetId'] as int;

@@ -98,7 +98,7 @@ class _BussinessChatsState extends State<BussinessChats> {
                               onTap: () {
                                 Navigator.pushNamed(
                                   context,
-                                  '/private-room',
+                                  '/private-bussines-room',
                                   arguments: int.parse(rooms[index]['id']),
                                 );
                               },

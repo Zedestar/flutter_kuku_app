@@ -351,31 +351,31 @@ class _ProfilePageState extends State<ProfilePage> {
                               style: TextStyle(color: Colors.grey),
                             ),
                             const SizedBox(height: 30),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: const [
-                                ProfileStatsBox(
-                                    title: "24", subtitle: "Guides Created"),
-                                ProfileStatsBox(
-                                    title: "343 KM",
-                                    subtitle: "Distance Travelled"),
-                                ProfileStatsBox(
-                                    title: "8", subtitle: "Trips Planned"),
-                              ],
-                            ),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            //   children: const [
+                            //     ProfileStatsBox(
+                            //         title: "24", subtitle: "Guides Created"),
+                            //     ProfileStatsBox(
+                            //         title: "343 KM",
+                            //         subtitle: "Distance Travelled"),
+                            //     ProfileStatsBox(
+                            //         title: "8", subtitle: "Trips Planned"),
+                            //   ],
+                            // ),
 
                             const SizedBox(height: 30),
 
                             // Settings List
                             const Divider(),
-                            ProfileListItems(
-                                icon: Icons.edit,
-                                text: "Edit profile",
-                                theActionOnTap: () {}),
-                            ProfileListItems(
-                                icon: Icons.credit_card,
-                                text: "Billing",
-                                theActionOnTap: () {}),
+                            // ProfileListItems(
+                            //     icon: Icons.edit,
+                            //     text: "Edit profile",
+                            //     theActionOnTap: () {}),
+                            // ProfileListItems(
+                            //     icon: Icons.credit_card,
+                            //     text: "Billing",
+                            //     theActionOnTap: () {}),
 
                             ProfileListItems(
                               icon: Icons.home_outlined,
