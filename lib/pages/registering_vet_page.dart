@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kuku_app/constants/constant.dart';
+import 'package:kuku_app/notificationConfigurations/notification_configuration.dart';
 
 class VetRegistrationPage extends StatefulWidget {
   const VetRegistrationPage({super.key});
@@ -51,53 +52,66 @@ class _VetRegistrationPageState extends State<VetRegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: Center(
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: _contents.length,
-                onPageChanged: _onPageChanged,
-                itemBuilder: (context, index) {
-                  return _contents[index];
-                },
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 40,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                    onPressed: null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: kcolor,
-                    ),
-                    child: Text("Back")),
-                Row(
-                  children: List.generate(
-                    _contents.length,
-                    (index) => Container(
-                      margin: const EdgeInsets.only(right: 5),
-                      height: 8,
-                      width: _currentPage == index ? 20 : 8,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: _currentPage == index ? kcolor : Colors.grey,
-                      ),
-                    ),
-                  ),
-                ),
-                ElevatedButton(onPressed: null, child: Text("Next")),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
+        body: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ElevatedButton(
+            onPressed: () {
+              showInstantNotification(
+                  id: 1,
+                  title: "Notification",
+                  body: "Hello am the notification message");
+            },
+            child: Text("Notification"))
+      ],
+    )
+        // Column(
+        //   children: [
+        //     Expanded(
+        //       child: Center(
+        //         child: PageView.builder(
+        //           controller: _pageController,
+        //           itemCount: _contents.length,
+        //           onPageChanged: _onPageChanged,
+        //           itemBuilder: (context, index) {
+        //             return _contents[index];
+        //           },
+        //         ),
+        //       ),
+        //     ),
+        //     Padding(
+        //       padding: EdgeInsets.symmetric(
+        //         vertical: 40,
+        //       ),
+        //       child: Row(
+        //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //         children: [
+        //           ElevatedButton(
+        //               onPressed: null,
+        //               style: ElevatedButton.styleFrom(
+        //                 backgroundColor: kcolor,
+        //               ),
+        //               child: Text("Back")),
+        //           Row(
+        //             children: List.generate(
+        //               _contents.length,
+        //               (index) => Container(
+        //                 margin: const EdgeInsets.only(right: 5),
+        //                 height: 8,
+        //                 width: _currentPage == index ? 20 : 8,
+        //                 decoration: BoxDecoration(
+        //                   borderRadius: BorderRadius.circular(20),
+        //                   color: _currentPage == index ? kcolor : Colors.grey,
+        //                 ),
+        //               ),
+        //             ),
+        //           ),
+        //           ElevatedButton(onPressed: null, child: Text("Next")),
+        //         ],
+        //       ),
+        //     )
+        //   ],
+        // ),
+        );
   }
 }

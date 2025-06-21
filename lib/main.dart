@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:kuku_app/connection/connect_url.dart';
+import 'package:kuku_app/notificationConfigurations/notification_configuration.dart';
 import 'package:kuku_app/provider/checking_logged_inuser_provider.dart';
 import 'package:kuku_app/provider/theme_mode_provider.dart';
 import 'package:kuku_app/router/router.dart';
@@ -13,6 +14,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await initHiveForFlutter();
+  await initNotifications();
 
   final authLink = AuthLink(
     getToken: () async {

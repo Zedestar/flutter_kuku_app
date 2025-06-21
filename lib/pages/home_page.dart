@@ -111,14 +111,14 @@ class _HomePageState extends State<HomePage> {
                       );
                     },
                   ),
-                  // ListTile(
-                  //   leading: Icon(Icons.heart_broken),
-                  //   title: Text('notifications'.tr()),
-                  //   onTap: () {
-                  //     Navigator.pushReplacementNamed(
-                  //         context, '/vet-registration-page');
-                  //   },
-                  // ),
+                  ListTile(
+                    leading: Icon(Icons.heart_broken),
+                    title: Text('notifications'.tr()),
+                    onTap: () {
+                      Navigator.pushReplacementNamed(
+                          context, '/vet-registration-page');
+                    },
+                  ),
                   BottomSheetTiles(
                     tileString: 'help_and_supprt'.tr(),
                     tileIcon: Icons.help_outline,
