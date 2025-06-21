@@ -116,8 +116,8 @@ class _PrivateRoomPageState extends State<PrivateRoomPage> {
                           return null;
                         },
                         decoration: const InputDecoration(
-                          labelText: 'Add comment',
-                          hintText: 'Write comment here',
+                          labelText: 'message',
+                          hintText: 'Add Message',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),

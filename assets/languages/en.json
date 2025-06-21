@@ -19,6 +19,7 @@
   "detect_disease": "Detect Disease",
   "profile_page": "Profile Page",
   "auth_page": "Authentication Page",
-  "Post_page": "Post Page",
-  "chat_page": "Chat Page"
+  "post_page": "Post Page",
+  "chat_page": "Chat Page",
+  "info_text": "Please add clear image of chicken droppings only, \n the feature has been trained to recognize droppings alone any other object may be flagged or wrongly classified"
 }

@@ -151,16 +151,65 @@ class _BussinessPageState extends State<BussinessPage> {
                                           fontWeight: FontWeight.w600),
                                     ),
                                     Spacer(),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: kcolor),
-                                      onPressed: () {
-                                        Navigator.pushNamed(
-                                            context, '/generalPostDetailsView',
-                                            arguments: post);
-                                      },
-                                      child: Text("View"),
-                                    )
+                                    // #############################################
+                                    GraphQLConsumer(
+                                        builder: (GraphQLClient client) {
+                                      return OutlinedButton(
+                                        onPressed: () async {
+                                          MutationOptions options =
+                                              MutationOptions(
+                                            document: gql(
+                                              r"""
+                                                mutation($sellerId:Int!){
+                                                  createBussinessRoom(sellerId:$sellerId){
+                                                    directRoomId
+                                                  }
+                                                }
+                                              """,
+                                            ),
+                                            variables: {
+                                              "sellerId":
+                                                  int.parse(post['user']['id']),
+                                            },
+                                          );
+                                          final result =
+                                              await client.mutate(options);
+                                          print(result);
+                                          // if (result.hasException == true) {
+                                          //   showDialog(
+                                          //     context: context,
+                                          //     builder: (BuildContext context) {
+                                          //       return AlertDialog(
+                                          //         title: Text("Error"),
+                                          //         content: Text(
+                                          //             "Server is temporary unavailable"),
+                                          //         actions: [
+                                          //           TextButton(
+                                          //               onPressed: () {
+                                          //                 Navigator.pop(
+                                          //                     context);
+                                          //               },
+                                          //               child: Text("Ok"))
+                                          //         ],
+                                          //       );
+                                          //     },
+                                          //   );
+                                          // } else {
+                                          final roomId = result
+                                                  .data!['createBussinessRoom']
+                                              ['directRoomId'];
+                                          Navigator.pushNamed(
+                                              context, '/private-bussines-room',
+                                              arguments: roomId);
+                                          // }
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                            foregroundColor: kcolor,
+                                            side: BorderSide(color: kcolor)),
+                                        child: Text("talk with seller"),
+                                      );
+                                    }),
+                                    // #############################################
                                   ],
                                 )
                               ],

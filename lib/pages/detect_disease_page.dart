@@ -1,5 +1,6 @@
 import 'dart:io';
 // import 'dart:convert';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -47,6 +48,14 @@ class _PredictDiseaseScreenState extends State<PredictDiseaseScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "info_text".tr(),
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
             ElevatedButton(
               onPressed: () async {
                 final token = await SecureStorageHelper.getToken();
@@ -81,8 +90,8 @@ class _PredictDiseaseScreenState extends State<PredictDiseaseScreen> {
             if (_image != null) ...[
               Image.file(
                 _image!,
-                height: 400,
-                width: 300,
+                height: 200,
+                width: 200,
                 fit: BoxFit.cover,
               ),
               GraphQLConsumer(

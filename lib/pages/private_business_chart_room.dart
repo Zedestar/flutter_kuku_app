@@ -111,8 +111,8 @@ class _PrivatedBusinessChatRoomState extends State<PrivatedBusinessChatRoom> {
                           return null;
                         },
                         decoration: const InputDecoration(
-                          labelText: 'Add comment',
-                          hintText: 'Write comment here',
+                          labelText: 'message',
+                          hintText: 'Add message',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),

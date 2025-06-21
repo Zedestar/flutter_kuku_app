@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:kuku_app/constants/constant.dart';
 import 'package:kuku_app/graphql/graphql_queries.dart';
+import 'package:http/http.dart' as http;
 
 class KnowledgePostPage extends StatefulWidget {
   const KnowledgePostPage({super.key});
@@ -11,6 +16,21 @@ class KnowledgePostPage extends StatefulWidget {
 }
 
 class _KnowledgePostPageState extends State<KnowledgePostPage> {
+  final _formKey = GlobalKey<FormState>();
+  File? _imageFile;
+  final _titleController = TextEditingController();
+  final _captionController = TextEditingController();
+
+  Future<void> pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,8 +39,8 @@ class _KnowledgePostPageState extends State<KnowledgePostPage> {
           return FutureBuilder<QueryResult>(
             future: client.query(
               QueryOptions(
-                document: gql(generalPostQuery),
-              ),
+                  document: gql(generalPostQuery),
+                  fetchPolicy: FetchPolicy.networkOnly),
             ),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -156,7 +176,128 @@ class _KnowledgePostPageState extends State<KnowledgePostPage> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: kcolor,
-        onPressed: null,
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            builder: (BuildContext context) {
+              return Padding(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                  left: 16,
+                  right: 16,
+                  top: 16,
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text("Create New Post",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: kcolor)),
+                        SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: pickImage,
+                          child: Text(
+                            "Picke image",
+                            style: TextStyle(color: kcolor),
+                          ),
+                        ),
+                        if (_imageFile != null) ...[
+                          Image.file(
+                            _imageFile!,
+                            height: 150,
+                            width: 150,
+                          )
+                        ],
+                        SizedBox(height: 16),
+                        TextFormField(
+                          controller: _titleController,
+                          decoration: InputDecoration(labelText: "Title"),
+                          validator: (value) => value == null || value.isEmpty
+                              ? 'Title is required'
+                              : null,
+                        ),
+                        SizedBox(height: 8),
+                        TextFormField(
+                          controller: _captionController,
+                          decoration:
+                              InputDecoration(labelText: " Post caption "),
+                          maxLines: 3,
+                        ),
+                        SizedBox(height: 16),
+                        GraphQLConsumer(
+                          builder: (GraphQLClient client) {
+                            return ElevatedButton(
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate() &&
+                                      _imageFile != null) {
+                                    final byte =
+                                        await _imageFile!.readAsBytes();
+                                    final multipartFile =
+                                        http.MultipartFile.fromBytes(
+                                      "photo",
+                                      byte,
+                                      filename:
+                                          _imageFile!.path.split('/').last,
+                                      contentType: MediaType('image', 'jpeg'),
+                                    );
+
+                                    final MutationOptions options =
+                                        MutationOptions(
+                                      document: gql(r"""
+                                        mutation CreateNewPost($title: String!, $caption: String!, $photo: Upload!) {
+                                          createPost(title: $title, caption: $caption, photo: $photo) {
+                                          post {
+                                            id
+                                            title
+                                            caption
+                                            pictureUrl
+                                            createdAt
+                                          }
+                                        }
+                                      }
+                                     """),
+                                      variables: {
+                                        "title": _titleController.text,
+                                        "caption": _captionController.text,
+                                        "photo": multipartFile
+                                      },
+                                    );
+                                    final result = await client.mutate(options);
+                                    if (result.hasException) {
+                                      print(result);
+                                    } else {
+                                      print("Sucesssss");
+                                    }
+
+                                    Navigator.pop(context);
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              'Please complete all fields and pick an image')),
+                                    );
+                                  }
+                                },
+                                child: Text("Create Post"));
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        },
         child: Text(
           "Create Post",
           textAlign: TextAlign.center,

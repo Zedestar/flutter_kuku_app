@@ -235,32 +235,32 @@ class SamplePage extends StatelessWidget {
                                 // Time taken
                                 Row(
                                   children: [
-                                    Icon(Icons.timer,
-                                        size: 16, color: Colors.grey),
-                                    SizedBox(width: 4),
-                                    Text(
-                                        "Was: ${samples[index]['timeTaken'].toString()}",
-                                        style: TextStyle(fontSize: 14)),
+                                    // Icon(Icons.timer,
+                                    //     size: 16, color: Colors.grey),
+                                    // SizedBox(width: 4),
+                                    // Text(
+                                    //     "Was: ${samples[index]['timeTaken'].toString()}",
+                                    //     style: TextStyle(fontSize: 14)),
                                   ],
                                 ),
 
                                 Row(
                                   children: [
                                     Text(
-                                      samples[index]['diseaseNamePredicted']
+                                      "Disease: ${samples[index]['diseaseNamePredicted']}"
                                           .toString()
                                           .toLowerCase(),
                                       style: TextStyle(fontSize: 12),
                                     ),
                                     SizedBox(width: 4),
-                                    Text(
-                                      double.parse((samples[index]
-                                                      ['confidenceLevel'] *
-                                                  100)
-                                              .toString())
-                                          .toStringAsFixed(0),
-                                      style: TextStyle(fontSize: 14),
-                                    ),
+                                    // Text(
+                                    //   double.parse((samples[index]
+                                    //                   ['confidenceLevel'] *
+                                    //               100)
+                                    //           .toString())
+                                    //       .toStringAsFixed(0),
+                                    //   style: TextStyle(fontSize: 14),
+                                    // ),
                                   ],
                                 ),
                               ],
@@ -279,7 +279,7 @@ class SamplePage extends StatelessWidget {
               } else {
                 return Center(
                   child: Text(
-                    "You haven't took any sample",
+                    "You haven't taken any sample",
                   ),
                 );
               }
